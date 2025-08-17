@@ -6,10 +6,13 @@ import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { Eye, EyeOff, Mail, Lock, ArrowLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import VerificationModal from '@/components/VerificationModal';
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isLogin, setIsLogin] = useState(true);
+  const [showVerificationModal, setShowVerificationModal] = useState(false);
+  const [email, setEmail] = useState('');
 
   return (
     <div className="min-h-screen bg-gradient-hero flex items-center justify-center p-4">
@@ -66,6 +69,8 @@ const Login = () => {
                     type="email"
                     placeholder="seu@email.com"
                     className="pl-10"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     required
                   />
                 </div>
@@ -120,11 +125,19 @@ const Login = () => {
                 </div>
               )}
 
-              <Link to="/dashboard">
-                <Button variant="hero" className="w-full">
-                  {isLogin ? 'Entrar' : 'Criar conta'}
-                </Button>
-              </Link>
+              <Button 
+                variant="hero" 
+                className="w-full"
+                onClick={() => {
+                  if (!isLogin) {
+                    setShowVerificationModal(true);
+                  } else {
+                    window.location.href = '/dashboard';
+                  }
+                }}
+              >
+                {isLogin ? 'Entrar' : 'Criar conta'}
+              </Button>
             </form>
 
             <Separator />
@@ -152,6 +165,21 @@ const Login = () => {
           </CardContent>
         </Card>
       </div>
+
+      <VerificationModal
+        isOpen={showVerificationModal}
+        email={email}
+        type="registration"
+        onVerify={(code) => {
+          console.log('Código verificado:', code);
+          setShowVerificationModal(false);
+          window.location.href = '/dashboard';
+        }}
+        onResend={() => {
+          console.log('Reenviando código para:', email);
+        }}
+        onClose={() => setShowVerificationModal(false)}
+      />
     </div>
   );
 };

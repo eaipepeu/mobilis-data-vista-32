@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -21,12 +21,25 @@ import {
   ArrowLeft
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import TermsModal from '@/components/TermsModal';
+import VerificationModal from '@/components/VerificationModal';
 
 const Dashboard = () => {
   const [searchType, setSearchType] = useState('cpf');
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [showTermsModal, setShowTermsModal] = useState(false);
+  const [showPaymentVerification, setShowPaymentVerification] = useState(false);
+  const [userEmail] = useState('joao@email.com'); // Simulated user email
+  
+  useEffect(() => {
+    // Check if user has accepted terms
+    const termsAccepted = localStorage.getItem('termsAccepted');
+    if (!termsAccepted) {
+      setShowTermsModal(true);
+    }
+  }, []);
 
   // Simulated API data
   const mockVehicleData = {
@@ -94,6 +107,21 @@ const Dashboard = () => {
       }
       setIsLoading(false);
     }, 2000);
+  };
+
+  const handlePaymentRequired = () => {
+    setShowPaymentVerification(true);
+  };
+
+  const handleTermsAccept = () => {
+    localStorage.setItem('termsAccepted', 'true');
+    setShowTermsModal(false);
+  };
+
+  const handleTermsReject = () => {
+    localStorage.removeItem('termsAccepted');
+    // Logout user
+    window.location.href = '/login';
   };
 
   const formatCurrency = (value: number | string) => {
@@ -367,7 +395,11 @@ const Dashboard = () => {
                       <span className="text-sm text-muted-foreground">Hoje, 14:30</span>
                     </div>
                     <Separator />
-                    <Button variant="outline" className="w-full">
+                    <Button 
+                      variant="outline" 
+                      className="w-full"
+                      onClick={handlePaymentRequired}
+                    >
                       <CreditCard className="w-4 h-4 mr-2" />
                       Adicionar Créditos
                     </Button>
@@ -436,6 +468,28 @@ const Dashboard = () => {
           </TabsContent>
         </Tabs>
       </div>
+
+      {/* Terms Modal */}
+      <TermsModal
+        isOpen={showTermsModal}
+        onAccept={handleTermsAccept}
+        onReject={handleTermsReject}
+      />
+
+      {/* Payment Verification Modal */}
+      <VerificationModal
+        isOpen={showPaymentVerification}
+        email={userEmail}
+        type="payment"
+        onVerify={(code) => {
+          console.log('Código de pagamento verificado:', code);
+          setShowPaymentVerification(false);
+        }}
+        onResend={() => {
+          console.log('Reenviando código de pagamento para:', userEmail);
+        }}
+        onClose={() => setShowPaymentVerification(false)}
+      />
     </div>
   );
 };

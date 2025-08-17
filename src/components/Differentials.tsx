@@ -53,10 +53,10 @@ const Differentials = () => {
   ];
 
   const stats = [
-    { number: '500K+', label: 'Consultas realizadas', icon: Zap },
+    { number: '3K+', label: 'Consultas realizadas', icon: Zap },
     { number: '99.9%', label: 'Disponibilidade', icon: Shield },
     { number: '24/7', label: 'Suporte online', icon: Clock },
-    { number: '5 anos', label: 'No mercado', icon: Award }
+    { number: 'Recém-criada', label: 'Empresa comprometida', icon: Award }
   ];
 
   return (
