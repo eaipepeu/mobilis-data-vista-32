@@ -64,7 +64,7 @@ const Hero = () => {
             {/* Trust indicators */}
             <div className="flex items-center space-x-6 pt-6 border-t border-white/20">
               <div className="text-center">
-                <div className="text-2xl font-bold text-secondary">500K+</div>
+                <div className="text-2xl font-bold text-secondary">3K+</div>
                 <div className="text-sm text-white/80">Consultas realizadas</div>
               </div>
               <div className="text-center">

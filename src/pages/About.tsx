@@ -6,7 +6,7 @@ import { Shield, Clock, Award, Users, Database, Lock } from 'lucide-react';
 
 const About = () => {
   const stats = [
-    { number: "150.000+", label: "Consultas Realizadas", icon: Database },
+    { number: "3K+", label: "Consultas Realizadas", icon: Database },
     { number: "5.000+", label: "Clientes Ativos", icon: Users },
     { number: "99,9%", label: "Disponibilidade", icon: Clock },
     { number: "24/7", label: "Suporte Online", icon: Shield }
