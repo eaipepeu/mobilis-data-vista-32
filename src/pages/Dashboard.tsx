@@ -20,9 +20,13 @@ import {
   CheckCircle,
   ArrowLeft
 } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import TermsModal from '@/components/TermsModal';
 import VerificationModal from '@/components/VerificationModal';
+import ReportTemplate from '@/components/ReportTemplate';
+import { generatePDF, ReportData } from '@/components/PDFGenerator';
+import { useAuth } from '@/hooks/useAuth';
+import { useToast } from '@/hooks/use-toast';
 
 const Dashboard = () => {
   const [searchType, setSearchType] = useState('cpf');
@@ -31,7 +35,17 @@ const Dashboard = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [showTermsModal, setShowTermsModal] = useState(false);
   const [showPaymentVerification, setShowPaymentVerification] = useState(false);
-  const [userEmail] = useState('joao@email.com'); // Simulated user email
+  const [showReportTemplate, setShowReportTemplate] = useState(false);
+  
+  const navigate = useNavigate();
+  const { toast } = useToast();
+  const { user, signOut, loading } = useAuth();
+
+  useEffect(() => {
+    if (!loading && !user) {
+      navigate('/login');
+    }
+  }, [user, loading, navigate]);
   
   useEffect(() => {
     // Check if user has accepted terms
@@ -120,8 +134,74 @@ const Dashboard = () => {
 
   const handleTermsReject = () => {
     localStorage.removeItem('termsAccepted');
-    // Logout user
-    window.location.href = '/login';
+    handleLogout();
+  };
+
+  const handleLogout = async () => {
+    try {
+      const { error } = await signOut();
+      if (error) {
+        toast({
+          title: "Erro no logout",
+          description: error.message,
+          variant: "destructive"
+        });
+      } else {
+        navigate('/login');
+      }
+    } catch (error) {
+      toast({
+        title: "Erro inesperado",
+        description: "Ocorreu um erro ao sair. Tente novamente.",
+        variant: "destructive"
+      });
+    }
+  };
+
+  const handleDownloadPDF = async () => {
+    if (!searchResults) return;
+
+    const reportData: ReportData = {
+      identificacao: {
+        nome: user?.user_metadata?.full_name || 'João Silva',
+        documento: searchQuery,
+        dataConsulta: new Date().toISOString()
+      }
+    };
+
+    if (searchResults.type === 'vehicle') {
+      reportData.detran = {
+        placa: searchResults.data.placa,
+        renavam: searchResults.data.renavam,
+        multas: searchResults.data.multas
+      };
+    } else if (searchResults.type === 'protests') {
+      reportData.protestos = {
+        constamProtestos: searchResults.data.constamProtestos,
+        documentoConsultado: searchResults.data.documentoConsultado,
+        protestos: searchResults.data.protestos
+      };
+    }
+
+    setShowReportTemplate(true);
+    
+    // Wait for the report template to render
+    setTimeout(async () => {
+      const result = await generatePDF(reportData, 'report-template');
+      if (result.success) {
+        toast({
+          title: "PDF gerado com sucesso",
+          description: `Arquivo ${result.fileName} baixado`
+        });
+      } else {
+        toast({
+          title: "Erro ao gerar PDF",
+          description: result.error,
+          variant: "destructive"
+        });
+      }
+      setShowReportTemplate(false);
+    }, 1000);
   };
 
   const formatCurrency = (value: number | string) => {
@@ -154,10 +234,10 @@ const Dashboard = () => {
             
             <div className="flex items-center space-x-4">
               <div className="text-sm">
-                <div className="font-medium">João Silva</div>
+                <div className="font-medium">{user?.user_metadata?.full_name || 'Usuário'}</div>
                 <div className="text-muted-foreground">Créditos: R$ 150,00</div>
               </div>
-              <Button variant="outline" size="sm">
+              <Button variant="outline" size="sm" onClick={handleLogout}>
                 <LogOut className="w-4 h-4 mr-2" />
                 Sair
               </Button>
@@ -266,7 +346,7 @@ const Dashboard = () => {
                     <CardHeader>
                       <CardTitle className="flex items-center justify-between">
                         <span>Resultado da Consulta</span>
-                        <Button variant="outline" size="sm">
+                        <Button variant="outline" size="sm" onClick={handleDownloadPDF}>
                           <Download className="w-4 h-4 mr-2" />
                           Baixar PDF
                         </Button>
@@ -479,17 +559,46 @@ const Dashboard = () => {
       {/* Payment Verification Modal */}
       <VerificationModal
         isOpen={showPaymentVerification}
-        email={userEmail}
+        email={user?.email || 'usuario@email.com'}
         type="payment"
         onVerify={(code) => {
           console.log('Código de pagamento verificado:', code);
           setShowPaymentVerification(false);
         }}
         onResend={() => {
-          console.log('Reenviando código de pagamento para:', userEmail);
+          console.log('Reenviando código de pagamento para:', user?.email);
         }}
         onClose={() => setShowPaymentVerification(false)}
       />
+
+      {/* Hidden Report Template for PDF Generation */}
+      {showReportTemplate && searchResults && (
+        <div style={{ position: 'absolute', left: '-9999px', top: '-9999px' }}>
+          <ReportTemplate
+            data={{
+              identificacao: {
+                nome: user?.user_metadata?.full_name || 'João Silva',
+                documento: searchQuery,
+                situacao: 'Consulta realizada'
+              },
+              ...(searchResults.type === 'vehicle' && {
+                detran: {
+                  placa: searchResults.data.placa,
+                  renavam: searchResults.data.renavam,
+                  multas: searchResults.data.multas
+                }
+              }),
+              ...(searchResults.type === 'protests' && {
+                protestos: {
+                  constamProtestos: searchResults.data.constamProtestos,
+                  documentoConsultado: searchResults.data.documentoConsultado,
+                  protestos: searchResults.data.protestos
+                }
+              })
+            }}
+          />
+        </div>
+      )}
     </div>
   );
 };
