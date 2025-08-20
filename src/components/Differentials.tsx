@@ -65,10 +65,10 @@ const Differentials = () => {
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-16">
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-            Diferenciais da Mobilis
+            Soluções Completas, Além da Consulta
           </h2>
           <p className="text-xl text-muted-foreground">
-            Mais que consultas: oferecemos soluções completas para suas necessidades
+            Diferenciais da Mobilis: Mais que consultas, oferecemos soluções completas para suas necessidades
           </p>
         </div>
 

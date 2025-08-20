@@ -14,6 +14,7 @@ import LGPD from "./pages/LGPD";
 import Certifications from "./pages/Certifications";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
+import SupportFloat from "@/components/SupportFloat";
 
 const queryClient = new QueryClient();
 
@@ -33,10 +34,11 @@ const App = () => (
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/lgpd" element={<LGPD />} />
           <Route path="/certifications" element={<Certifications />} />
-          <Route path="/contato" element={<Contact />} />
+          <Route path="/contact" element={<Contact />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
+        <SupportFloat />
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>

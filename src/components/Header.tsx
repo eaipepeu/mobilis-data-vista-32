@@ -8,10 +8,10 @@ const Header = () => {
 
   const navigation = [
     { name: 'Início', href: '#hero' },
+    { name: 'Sobre', href: '/about' },
     { name: 'Consultas', href: '#services' },
     { name: 'Planos', href: '#pricing' },
-    { name: 'Diferenciais', href: '#differentials' },
-    { name: 'Contato', href: '/contato' },
+    { name: 'Contato', href: '/contact' },
   ];
 
   return (

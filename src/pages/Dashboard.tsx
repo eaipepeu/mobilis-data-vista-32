@@ -165,6 +165,7 @@ const Dashboard = () => {
       identificacao: {
         nome: user?.user_metadata?.full_name || 'João Silva',
         documento: searchQuery,
+        situacao: 'Consulta realizada',
         dataConsulta: new Date().toISOString()
       }
     };
@@ -574,26 +575,30 @@ const Dashboard = () => {
       {/* Hidden Report Template for PDF Generation */}
       {showReportTemplate && searchResults && (
         <div style={{ position: 'absolute', left: '-9999px', top: '-9999px' }}>
-          <ReportTemplate
-            data={{
-              identificacao: {
-                nome: user?.user_metadata?.full_name || 'João Silva',
-                documento: searchQuery,
-                situacao: 'Consulta realizada'
-              },
-              ...(searchResults.type === 'vehicle' && {
-                detran: {
-                  placa: searchResults.data.placa,
-                  renavam: searchResults.data.renavam,
-                  multas: searchResults.data.multas
-                }
-              }),
+            <ReportTemplate
+              data={{
+                identificacao: {
+                  nome: user?.user_metadata?.full_name || 'João Silva',
+                  documento: searchQuery,
+                  situacao: 'Consulta realizada'
+                },
+                ...(searchResults.type === 'vehicle' && {
+                  detran: {
+                    placa: searchResults.data.placa,
+                    renavam: searchResults.data.renavam,
+                    modelo: searchResults.data.modelo || '',
+                    ano: searchResults.data.ano || '',
+                    situacao: searchResults.data.situacao || '',
+                    debitos: searchResults.data.debitos || '',
+                    multas: searchResults.data.multas || []
+                  } as any
+                }),
               ...(searchResults.type === 'protests' && {
                 protestos: {
                   constamProtestos: searchResults.data.constamProtestos,
                   documentoConsultado: searchResults.data.documentoConsultado,
                   protestos: searchResults.data.protestos
-                }
+                } as any
               })
             }}
           />

@@ -21,11 +21,11 @@ const Footer = () => {
   ];
 
   const company = [
-    { name: 'Sobre Nós', href: '#' },
+    { name: 'Sobre Nós', href: '/about' },
     { name: 'Planos', href: '#pricing' },
     { name: 'Diferenciais', href: '#differentials' },
-    { name: 'Contato', href: '/contato' },
-    { name: 'Blog', href: '#' }
+    { name: 'Contato', href: '/contact' },
+    { name: 'Blog', href: '/blog' }
   ];
 
   const legal = [
@@ -51,31 +51,38 @@ const Footer = () => {
             {/* Company Info */}
             <div className="lg:col-span-2 space-y-4">
               <div className="flex items-center space-x-3 mb-4">
-                <img 
-                  src="/lovable-uploads/d95e1fef-1a1c-4f82-a6c9-5c5655ed82d8.png" 
-                  alt="Mobilis Consultas" 
-                  className="h-10 w-auto brightness-0 invert"
-                />
+                <h3 className="text-xl font-semibold">Mobilis Consultas</h3>
               </div>
               <p className="text-white/80 leading-relaxed">
-                A Mobilis Consultas é a plataforma mais completa para consultas de informações 
-                cadastrais, patrimoniais e jurídicas. Oferecemos dados seguros, precisos e 
-                atualizados em tempo real.
+                Tecnologia avançada para consultas profissionais com máxima segurança 
+                e conformidade LGPD. Dados criptografados e resultados instantâneos.
+              </p>
+              <p className="text-sm text-white/60">
+                CNPJ: 62.270.941/0001-00
               </p>
               
               {/* Contact Info */}
               <div className="space-y-3">
                 <div className="flex items-center space-x-3">
                   <Phone className="w-5 h-5 text-secondary" />
-                  <span className="text-white/90">(11) 99999-9999</span>
+                  <a href="https://wa.me/5519999999999" target="_blank" rel="noopener noreferrer" className="text-white/90 hover:text-white">
+                    (19) 99999-9999
+                  </a>
                 </div>
                 <div className="flex items-center space-x-3">
                   <Mail className="w-5 h-5 text-secondary" />
-                  <span className="text-white/90">contato@mobilisconsultas.com.br</span>
+                  <span className="text-white/90">suporte@mobilisconsultas.com.br</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <MapPin className="w-5 h-5 text-secondary" />
+                  <span className="text-white/90 text-sm">
+                    Avenida dos Estados, 432, Vila D'Agostinho<br />
+                    Valinhos - SP, CEP: 13284-170
+                  </span>
                 </div>
                 <div className="flex items-center space-x-3">
                   <Clock className="w-5 h-5 text-secondary" />
-                  <span className="text-white/90">Atendimento 24/7</span>
+                  <span className="text-white/90">Suporte 24/7</span>
                 </div>
               </div>
 

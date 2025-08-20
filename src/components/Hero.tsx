@@ -5,10 +5,10 @@ import heroImage from '@/assets/hero-bg.jpg';
 
 const Hero = () => {
   const features = [
-    'Consultas em tempo real',
-    'Dados seguros e confiáveis',
-    'Plataforma intuitiva',
-    'Suporte especializado'
+    'Resultados instantâneos',
+    'Máxima segurança SSL',
+    'Conformidade LGPD',
+    'Suporte 24/7'
   ];
 
   return (
@@ -28,12 +28,12 @@ const Hero = () => {
           <div className="text-white space-y-8">
             <div className="space-y-4">
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
-                Consultas Completas e
-                <span className="block text-secondary"> Instantâneas</span>
+                Tecnologia Avançada para
+                <span className="block text-secondary"> Consultas Profissionais</span>
               </h1>
               <p className="text-xl md:text-2xl text-white/90 leading-relaxed">
-                Acesse informações de CPF, CNPJ, veículos e bens imóveis de forma rápida, 
-                segura e confiável. A plataforma mais completa do mercado.
+                Acesse informações completas e atualizadas com nossa plataforma de consultas profissionais.
+                Resultados instantâneos processados em tempo real com dados dos órgãos oficiais.
               </p>
             </div>
 

@@ -6,16 +6,9 @@ export interface ReportData {
     nome: string;
     documento: string;
     situacao: string;
+    dataConsulta?: string;
   };
-  detran?: {
-    placa: string;
-    renavam: string;
-    multas: Array<{
-      data: string;
-      descricao: string;
-      valor: number;
-    }>;
-  };
+  detran?: any;
   protestos?: {
     constamProtestos: boolean;
     documentoConsultado: string;
