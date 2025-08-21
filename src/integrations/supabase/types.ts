@@ -680,6 +680,10 @@ export type Database = {
           terms_of_use: string
         }[]
       }
+      deduct_user_credits: {
+        Args: { amount_cents: number; description: string; user_id: string }
+        Returns: boolean
+      }
       generate_verification_token: {
         Args: { p_token_type: string }
         Returns: {

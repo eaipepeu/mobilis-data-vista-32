@@ -387,116 +387,134 @@ const Dashboard = () => {
 
                 {/* Results */}
                 {searchResults && (
-                  <Card className="mt-6">
-                    <CardHeader>
-                      <CardTitle className="flex items-center justify-between">
-                        <span>Resultado da Consulta</span>
-                        <Button variant="outline" size="sm" onClick={handleDownloadPDF}>
-                          <Download className="w-4 h-4 mr-2" />
-                          Baixar PDF
-                        </Button>
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      {searchResults.type === 'vehicle' && (
-                        <div className="space-y-4">
-                          <div className="grid grid-cols-2 gap-4">
-                            <div>
-                              <Label>Placa</Label>
-                              <div className="font-semibold">{searchResults.data.placa}</div>
+                  <>
+                    <Card className="mt-6">
+                      <CardHeader>
+                        <CardTitle className="flex items-center justify-between">
+                          <span>Resultado da Consulta</span>
+                          <Button variant="outline" size="sm" onClick={handleDownloadPDF}>
+                            <Download className="w-4 h-4 mr-2" />
+                            Baixar PDF
+                          </Button>
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        {(searchResults.type === 'vehicle' || searchResults.type === 'veiculo') && (
+                          <div className="space-y-4">
+                            <div className="grid grid-cols-2 gap-4">
+                              <div>
+                                <Label>Placa</Label>
+                                <div className="font-semibold">{searchResults.data.placa}</div>
+                              </div>
+                              <div>
+                                <Label>Renavam</Label>
+                                <div className="font-semibold">{searchResults.data.renavam}</div>
+                              </div>
                             </div>
+
+                            <Separator />
+
                             <div>
-                              <Label>Renavam</Label>
-                              <div className="font-semibold">{searchResults.data.renavam}</div>
-                            </div>
-                          </div>
-
-                          <Separator />
-
-                          <div>
-                            <h3 className="font-semibold mb-3 flex items-center">
-                              <AlertTriangle className="w-5 h-5 mr-2 text-destructive" />
-                              Multas Pendentes ({searchResults.data.total_multas})
-                            </h3>
-                            <div className="space-y-3">
-                              {searchResults.data.multas.map((multa: any, index: number) => (
-                                <div key={index} className="bg-muted/50 p-4 rounded-lg">
-                                  <div className="flex justify-between items-start">
-                                    <div>
-                                      <div className="font-medium">{multa.descricao}</div>
-                                      <div className="text-sm text-muted-foreground">
-                                        Data: {new Date(multa.data).toLocaleDateString('pt-BR')}
+                              <h3 className="font-semibold mb-3 flex items-center">
+                                <AlertTriangle className="w-5 h-5 mr-2 text-destructive" />
+                                Multas Pendentes ({searchResults.data.total_multas || searchResults.data.multas?.length || 0})
+                              </h3>
+                              <div className="space-y-3">
+                                {(searchResults.data.multas || []).map((multa: any, index: number) => (
+                                  <div key={index} className="bg-muted/50 p-4 rounded-lg">
+                                    <div className="flex justify-between items-start">
+                                      <div>
+                                        <div className="font-medium">{multa.descricao}</div>
+                                        <div className="text-sm text-muted-foreground">
+                                          Data: {new Date(multa.data).toLocaleDateString('pt-BR')}
+                                        </div>
                                       </div>
-                                    </div>
-                                    <div className="text-right">
-                                      <div className="font-bold text-destructive">
-                                        {formatCurrency(multa.valor)}
+                                      <div className="text-right">
+                                        <div className="font-bold text-destructive">
+                                          {formatCurrency(multa.valor)}
+                                        </div>
                                       </div>
                                     </div>
                                   </div>
-                                </div>
-                              ))}
+                                ))}
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      )}
+                        )}
 
-                      {searchResults.type === 'protests' && (
-                        <div className="space-y-4">
-                          <div className="flex items-center space-x-2">
-                            {searchResults.data.constamProtestos ? (
-                              <>
-                                <AlertTriangle className="w-5 h-5 text-destructive" />
-                                <span className="font-semibold text-destructive">
-                                  Constam protestos para este documento
-                                </span>
-                              </>
-                            ) : (
-                              <>
-                                <CheckCircle className="w-5 h-5 text-secondary" />
-                                <span className="font-semibold text-secondary">
-                                  Nenhum protesto encontrado
-                                </span>
-                              </>
+                        {(searchResults.type === 'protests' || searchResults.type === 'protestos') && (
+                          <div className="space-y-4">
+                            <div className="flex items-center space-x-2">
+                              {searchResults.data.constamProtestos ? (
+                                <>
+                                  <AlertTriangle className="w-5 h-5 text-destructive" />
+                                  <span className="font-semibold text-destructive">
+                                    Constam protestos para este documento
+                                  </span>
+                                </>
+                              ) : (
+                                <>
+                                  <CheckCircle className="w-5 h-5 text-secondary" />
+                                  <span className="font-semibold text-secondary">
+                                    Nenhum protesto encontrado
+                                  </span>
+                                </>
+                              )}
+                            </div>
+
+                            <div>
+                              <Label>Documento Consultado</Label>
+                              <div className="font-semibold">{searchResults.data.documentoConsultado}</div>
+                            </div>
+
+                            {searchResults.data.constamProtestos && (
+                              <div className="space-y-4">
+                                {(searchResults.data.protestos || []).map((protesto: any, index: number) => (
+                                  <div key={index} className="bg-muted/50 p-4 rounded-lg">
+                                    <h4 className="font-semibold mb-3">Estado: {protesto.estado}</h4>
+                                    {(protesto.cartoriosProtesto || []).map((cartorio: any, cartorioIndex: number) => (
+                                      <div key={cartorioIndex} className="mb-3">
+                                        <div className="font-medium">{cartorio.nome}</div>
+                                        <div className="text-sm text-muted-foreground mb-2">
+                                          {cartorio.cidade}
+                                        </div>
+                                        <div className="space-y-2">
+                                          {(cartorio.protesto || []).map((prot: any, protIndex: number) => (
+                                            <div key={protIndex} className="flex justify-between text-sm">
+                                              <span>{new Date(prot.dataProtesto).toLocaleDateString('pt-BR')}</span>
+                                              <span className="font-medium text-destructive">
+                                                {formatCurrency(prot.valorProtestado)}
+                                              </span>
+                                            </div>
+                                          ))}
+                                        </div>
+                                      </div>
+                                    ))}
+                                  </div>
+                                ))}
+                              </div>
                             )}
                           </div>
+                        )}
 
-                          <div>
-                            <Label>Documento Consultado</Label>
-                            <div className="font-semibold">{searchResults.data.documentoConsultado}</div>
+                        {/* Other consultation types */}
+                        {(searchResults.type === 'cpf' || searchResults.type === 'cnpj' || searchResults.type === 'imoveis') && (
+                          <div className="space-y-4">
+                            <pre className="bg-muted/50 p-4 rounded-lg text-sm overflow-auto">
+                              {JSON.stringify(searchResults.data, null, 2)}
+                            </pre>
                           </div>
+                        )}
+                      </CardContent>
+                    </Card>
 
-                          {searchResults.data.constamProtestos && (
-                            <div className="space-y-4">
-                              {searchResults.data.protestos.map((protesto: any, index: number) => (
-                                <div key={index} className="bg-muted/50 p-4 rounded-lg">
-                                  <h4 className="font-semibold mb-3">Estado: {protesto.estado}</h4>
-                                  {protesto.cartoriosProtesto.map((cartorio: any, cartorioIndex: number) => (
-                                    <div key={cartorioIndex} className="mb-3">
-                                      <div className="font-medium">{cartorio.nome}</div>
-                                      <div className="text-sm text-muted-foreground mb-2">
-                                        {cartorio.cidade}
-                                      </div>
-                                      <div className="space-y-2">
-                                        {cartorio.protesto.map((prot: any, protIndex: number) => (
-                                          <div key={protIndex} className="flex justify-between text-sm">
-                                            <span>{new Date(prot.dataProtesto).toLocaleDateString('pt-BR')}</span>
-                                            <span className="font-medium text-destructive">
-                                              {formatCurrency(prot.valorProtestado)}
-                                            </span>
-                                          </div>
-                                        ))}
-                                      </div>
-                                    </div>
-                                  ))}
-                                </div>
-                              ))}
-                            </div>
-                          )}
-                        </div>
-                      )}
-                    </CardContent>
-                  </Card>
+                    {/* Report Component */}
+                    <ConsultationReport
+                      data={searchResults.data}
+                      consultationType={searchType}
+                      searchQuery={searchQuery}
+                    />
+                  </>
                 )}
               </div>
 
