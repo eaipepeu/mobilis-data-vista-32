@@ -191,9 +191,9 @@ const Contact = () => {
                     <Mail className="w-5 h-5 text-primary mt-1" />
                     <div>
                       <div className="font-semibold">E-mail</div>
-                      <div className="text-muted-foreground">
-                        contato@mobilisconsultas.com.br
-                      </div>
+                       <div className="text-muted-foreground">
+                         contato@mobilisconsultas.com.br
+                       </div>
                       <div className="text-sm text-muted-foreground">
                         Resposta em até 2 horas
                       </div>

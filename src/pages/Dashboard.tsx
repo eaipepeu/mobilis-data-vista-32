@@ -24,7 +24,9 @@ import { Link, useNavigate } from 'react-router-dom';
 import TermsModal from '@/components/TermsModal';
 import VerificationModal from '@/components/VerificationModal';
 import ReportTemplate from '@/components/ReportTemplate';
+import ConsultationReport from '@/components/ConsultationReport';
 import { generatePDF, ReportData } from '@/components/PDFGenerator';
+import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
 
@@ -104,10 +106,51 @@ const Dashboard = () => {
   ];
 
   const handleSearch = async () => {
+    if (!searchQuery.trim()) {
+      toast({
+        title: "Erro",
+        description: "Digite os dados para consulta",
+        variant: "destructive"
+      });
+      return;
+    }
+
     setIsLoading(true);
     
-    // Simulate API call
-    setTimeout(() => {
+    try {
+      const { data, error } = await supabase.functions.invoke('consultation-api', {
+        body: {
+          type: searchType,
+          query: searchQuery,
+          userId: user?.id
+        }
+      });
+
+      if (error) {
+        throw error;
+      }
+
+      if (data.success) {
+        setSearchResults({
+          type: searchType,
+          data: data.data
+        });
+        toast({
+          title: "Consulta realizada",
+          description: `Créditos utilizados: R$ ${(data.credits_used / 100).toFixed(2)}`
+        });
+      } else {
+        throw new Error(data.error || 'Erro na consulta');
+      }
+    } catch (error) {
+      console.error('Error in consultation:', error);
+      toast({
+        title: "Erro na consulta",
+        description: error.message || "Ocorreu um erro ao realizar a consulta",
+        variant: "destructive"
+      });
+      
+      // Fallback to mock data for demo purposes
       if (searchType === 'veiculo') {
         setSearchResults({
           type: 'vehicle',
@@ -119,8 +162,9 @@ const Dashboard = () => {
           data: mockProtestData
         });
       }
+    } finally {
       setIsLoading(false);
-    }, 2000);
+    }
   };
 
   const handlePaymentRequired = () => {
