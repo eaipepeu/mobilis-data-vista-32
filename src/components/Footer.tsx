@@ -65,8 +65,8 @@ const Footer = () => {
               <div className="space-y-3">
                 <div className="flex items-center space-x-3">
                   <Phone className="w-5 h-5 text-secondary" />
-                  <a href="https://wa.me/5519999999999" target="_blank" rel="noopener noreferrer" className="text-white/90 hover:text-white">
-                    (19) 99999-9999
+                  <a href="https://wa.me/5511981162006" target="_blank" rel="noopener noreferrer" className="text-white/90 hover:text-white">
+                    (11) 98116-2006
                   </a>
                 </div>
                 <div className="flex items-center space-x-3">
@@ -77,7 +77,7 @@ const Footer = () => {
                   <MapPin className="w-5 h-5 text-secondary" />
                   <span className="text-white/90 text-sm">
                     Avenida dos Estados, 432, Vila D'Agostinho<br />
-                    Valinhos - SP, CEP: 13284-170
+                    Valinhos - SP, CEP: 13274-170
                   </span>
                 </div>
                 <div className="flex items-center space-x-3">

@@ -23,8 +23,8 @@ import {
 import { Link, useNavigate } from 'react-router-dom';
 import TermsModal from '@/components/TermsModal';
 import VerificationModal from '@/components/VerificationModal';
-import ReportTemplate from '@/components/ReportTemplate';
 import ConsultationReport from '@/components/ConsultationReport';
+import ReportTemplate from '@/components/ReportTemplate';
 import { generatePDF, ReportData } from '@/components/PDFGenerator';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
@@ -102,7 +102,8 @@ const Dashboard = () => {
     { id: 'cnpj', name: 'CNPJ', icon: Building2, price: 'R$ 25,00' },
     { id: 'veiculo', name: 'Veículo', icon: Car, price: 'R$ 18,00' },
     { id: 'imoveis', name: 'Imóveis', icon: Home, price: 'R$ 20,00' },
-    { id: 'protestos', name: 'Protestos', icon: FileText, price: 'R$ 10,00' }
+    { id: 'protestos', name: 'Protestos', icon: FileText, price: 'R$ 10,00' },
+    { id: 'regularidade', name: 'Regularidade', icon: CheckCircle, price: 'R$ 12,00' }
   ];
 
   const handleSearch = async () => {
@@ -349,6 +350,7 @@ const Dashboard = () => {
                         {searchType === 'veiculo' && 'Placa do Veículo'}
                         {searchType === 'imoveis' && 'CPF/CNPJ do Proprietário'}
                         {searchType === 'protestos' && 'CPF/CNPJ'}
+                        {searchType === 'regularidade' && 'CNPJ da Empresa'}
                       </Label>
                       <Input
                         id="search"
@@ -358,6 +360,7 @@ const Dashboard = () => {
                           searchType === 'cpf' ? '000.000.000-00' :
                           searchType === 'cnpj' ? '00.000.000/0000-00' :
                           searchType === 'veiculo' ? 'ABC1234' :
+                          searchType === 'regularidade' ? '00.000.000/0000-00' :
                           'Digite os dados'
                         }
                         className="text-lg"
@@ -508,12 +511,13 @@ const Dashboard = () => {
                       </CardContent>
                     </Card>
 
-                    {/* Report Component */}
-                    <ConsultationReport
-                      data={searchResults.data}
-                      consultationType={searchType}
-                      searchQuery={searchQuery}
-                    />
+          {searchResults && (
+            <ReportTemplate 
+              data={searchResults.data} 
+              consultationType={searchType} 
+              searchQuery={searchQuery}
+            />
+          )}
                   </>
                 )}
               </div>
@@ -538,14 +542,12 @@ const Dashboard = () => {
                       <span className="text-sm text-muted-foreground">Hoje, 14:30</span>
                     </div>
                     <Separator />
-                    <Button 
-                      variant="outline" 
-                      className="w-full"
-                      onClick={handlePaymentRequired}
-                    >
-                      <CreditCard className="w-4 h-4 mr-2" />
-                      Adicionar Créditos
-                    </Button>
+          <Link to="/payment" className="block">
+            <Button variant="outline" className="w-full">
+              <CreditCard className="w-4 h-4 mr-2" />
+              Adicionar Créditos
+            </Button>
+          </Link>
                   </CardContent>
                 </Card>
 
@@ -638,32 +640,10 @@ const Dashboard = () => {
       {showReportTemplate && searchResults && (
         <div style={{ position: 'absolute', left: '-9999px', top: '-9999px' }}>
             <ReportTemplate
-              data={{
-                identificacao: {
-                  nome: user?.user_metadata?.full_name || 'João Silva',
-                  documento: searchQuery,
-                  situacao: 'Consulta realizada'
-                },
-                ...(searchResults.type === 'vehicle' && {
-                  detran: {
-                    placa: searchResults.data.placa,
-                    renavam: searchResults.data.renavam,
-                    modelo: searchResults.data.modelo || '',
-                    ano: searchResults.data.ano || '',
-                    situacao: searchResults.data.situacao || '',
-                    debitos: searchResults.data.debitos || '',
-                    multas: searchResults.data.multas || []
-                  } as any
-                }),
-              ...(searchResults.type === 'protests' && {
-                protestos: {
-                  constamProtestos: searchResults.data.constamProtestos,
-                  documentoConsultado: searchResults.data.documentoConsultado,
-                  protestos: searchResults.data.protestos
-                } as any
-              })
-            }}
-          />
+              data={searchResults.data}
+              consultationType={searchType}
+              searchQuery={searchQuery}
+            />
         </div>
       )}
     </div>

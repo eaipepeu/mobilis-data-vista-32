@@ -36,48 +36,138 @@ serve(async (req) => {
     switch (type) {
       case 'cpf':
         result = {
-          nome: "João da Silva Santos",
-          cpf: query,
-          situacao: "Ativo",
-          nascimento: "15/03/1985",
-          score: 650,
-          renda_estimada: "R$ 4.500,00",
-          telefones: ["(11) 99999-9999", "(11) 3333-4444"],
-          emails: ["joao.silva@email.com"],
-          enderecos: [{
-            logradouro: "Rua das Flores, 123",
-            bairro: "Centro",
-            cidade: "São Paulo",
-            uf: "SP",
-            cep: "01234-567"
-          }]
+          metaDados: {
+            consultaNome: "CPF",
+            consultaUid: `CPF-${Date.now()}`,
+            chave: "mob-cpf-key",
+            usuario: "system",
+            mensagem: "Consulta realizada com sucesso",
+            ip: "127.0.0.1",
+            resultadoId: 1,
+            resultado: "Sucesso",
+            apiVersao: "v3",
+            enviarCallback: false,
+            gerarComprovante: false,
+            urlComprovante: "",
+            assincrono: true,
+            data: new Date().toLocaleString('pt-BR'),
+            tempoExecucaoMs: 250
+          },
+          retorno: {
+            cpf: query,
+            nome: "João da Silva Santos",
+            sexo: "M",
+            dataNascimento: "15/03/1985",
+            nomeMae: "Maria Santos Silva",
+            idade: 39,
+            signo: "Peixes",
+            telefones: [{
+              telefoneComDDD: "(11) 99999-9999",
+              telemarketingBloqueado: false,
+              operadora: "Vivo",
+              tipoTelefone: "Celular",
+              whatsApp: true
+            }],
+            enderecos: [{
+              logradouro: "Rua das Flores",
+              numero: "123",
+              complemento: "Apto 45",
+              bairro: "Centro",
+              cidade: "São Paulo",
+              uf: "SP",
+              cep: "01234-567"
+            }],
+            emails: [{
+              enderecoEmail: "joao.silva@email.com"
+            }],
+            rendaEstimada: "R$ 4.500,00",
+            rendaFaixaSalarial: "De R$ 3.000 a R$ 5.000"
+          }
         };
         break;
         
       case 'cnpj':
         result = {
-          razao_social: "Empresa Exemplo LTDA",
-          cnpj: query,
-          situacao: "Ativa",
-          abertura: "10/05/2018",
-          cnae: "6201-5/00 - Desenvolvimento de programas de computador sob encomenda",
-          natureza: "Sociedade Empresária Limitada",
-          capital_social: "R$ 50.000,00",
-          socios: [{
-            nome: "Maria Santos Silva",
-            cpf: "***.***.***-**",
-            participacao: "70%"
-          }, {
-            nome: "Pedro Oliveira Lima", 
-            cpf: "***.***.***-**",
-            participacao: "30%"
-          }],
-          endereco: {
-            logradouro: "Av. Paulista, 1000",
-            bairro: "Bela Vista",
-            cidade: "São Paulo",
-            uf: "SP",
-            cep: "01310-100"
+          metaDados: {
+            consultaNome: "CNPJ",
+            consultaUid: `CNPJ-${Date.now()}`,
+            chave: "mob-cnpj-key",
+            usuario: "system",
+            mensagem: "Consulta realizada com sucesso",
+            ip: "127.0.0.1",
+            resultadoId: 1,
+            resultado: "Sucesso",
+            apiVersao: "v3",
+            enviarCallback: false,
+            gerarComprovante: false,
+            urlComprovante: "",
+            assincrono: true,
+            data: new Date().toLocaleString('pt-BR'),
+            tempoExecucaoMs: 180
+          },
+          retorno: {
+            cnpj: query,
+            razaoSocial: "Empresa Exemplo LTDA",
+            nomeFantasia: "Empresa Exemplo",
+            dataFundacao: "10/05/2018",
+            cnaeCodigo: 6201500,
+            cnaeDescricao: "Desenvolvimento de programas de computador sob encomenda",
+            cnaEsSecundarios: [{
+              cnaeCodigoSecundario: 6202300,
+              cnaeDescricaoSecundario: "Desenvolvimento e licenciamento de programas de computador customizáveis"
+            }],
+            situacaoCadastral: "ATIVA",
+            situacaoEspecial: "",
+            naturezaJuridicaCodigo: 206,
+            naturezaJuridicaDescricao: "Sociedade Empresária Limitada",
+            naturezaJuridicaTipo: "Empresária",
+            porte: "MICROEMPRESA",
+            faixaFuncionarios: "1 a 5",
+            quantidadeFuncionarios: 3,
+            faixaFaturamento: "Até R$ 360.000,00",
+            faturamentoMedioCNAE: "R$ 250.000,00",
+            faturamentoPresumido: "R$ 180.000,00",
+            matriz: true,
+            orgaoPublico: "NÃO",
+            ramo: "Tecnologia",
+            tipoEmpresa: "Limitada",
+            tributacao: "Simples Nacional",
+            opcaoMEI: "NÃO",
+            opcaoSimples: "SIM",
+            quantidadeFiliais: "0",
+            telefones: [{
+              telefoneComDDD: "(11) 3333-4444",
+              telemarketingBloqueado: false,
+              operadora: "Telefonica",
+              tipoTelefone: "Fixo",
+              whatsApp: false
+            }],
+            enderecos: [{
+              logradouro: "Av. Paulista",
+              numero: "1000",
+              complemento: "Sala 100",
+              bairro: "Bela Vista",
+              cidade: "São Paulo",
+              uf: "SP",
+              cep: "01310-100"
+            }],
+            emails: [{
+              enderecoEmail: "contato@empresa.com.br"
+            }],
+            ultimaAtualizacaoPJ: "15/08/2024",
+            socios: [{
+              documento: "***.***.***-**",
+              nome: "Maria Santos Silva",
+              percentualParticipacao: "70,00",
+              dataEntrada: "10/05/2018",
+              cargo: "Administradora"
+            }, {
+              documento: "***.***.***-**",
+              nome: "Pedro Oliveira Lima",
+              percentualParticipacao: "30,00",
+              dataEntrada: "10/05/2018",
+              cargo: "Sócio"
+            }]
           }
         };
         break;
@@ -159,6 +249,45 @@ serve(async (req) => {
             situacao: "Regular"
           }],
           total_imoveis: 2
+        };
+        break;
+
+      case 'regularidade':
+        result = {
+          metaDados: {
+            consultaNome: "REGULARIDADE_EMPRESA",
+            consultaUid: `REG-${Date.now()}`,
+            chave: "mob-reg-key",
+            usuario: "system",
+            mensagem: "Consulta realizada com sucesso",
+            ip: "127.0.0.1",
+            resultadoId: 1,
+            resultado: "Sucesso",
+            apiVersao: "v3",
+            enviarCallback: false,
+            gerarComprovante: false,
+            urlComprovante: "",
+            assincrono: true,
+            data: new Date().toLocaleString('pt-BR'),
+            tempoExecucaoMs: 320
+          },
+          retorno: {
+            transportador: "Transportes Silva LTDA",
+            documento: query,
+            rntrc: 123456789,
+            dataEmissao: "15/01/2024",
+            dataConsulta: new Date().toLocaleDateString('pt-BR'),
+            localizacao: {
+              uf: "SP",
+              municipio: "São Paulo"
+            },
+            categoria: "ETC",
+            situacao: "ATIVO",
+            apto: true,
+            status: "REGULAR",
+            observacao: "Empresa em situação regular para exercer atividade de transporte",
+            protocolo: `PROT-${Date.now()}`
+          }
         };
         break;
         

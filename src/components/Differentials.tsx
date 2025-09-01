@@ -53,10 +53,9 @@ const Differentials = () => {
   ];
 
   const stats = [
-    { number: '3K+', label: 'Consultas realizadas', icon: Zap },
     { number: '99.9%', label: 'Disponibilidade', icon: Shield },
     { number: '24/7', label: 'Suporte online', icon: Clock },
-    { number: 'Recém-criada', label: 'Empresa comprometida', icon: Award }
+    { number: 'Empresa', label: 'Comprometida', icon: Award }
   ];
 
   return (
@@ -144,7 +143,7 @@ const Differentials = () => {
         {/* Stats */}
         <div className="bg-white rounded-2xl shadow-card p-8">
           <h3 className="text-2xl font-bold text-center mb-8">Números que Comprovam nossa Excelência</h3>
-          <div className="grid md:grid-cols-4 gap-6">
+          <div className="grid md:grid-cols-3 gap-6">
             {stats.map((stat) => {
               const IconComponent = stat.icon;
               return (
