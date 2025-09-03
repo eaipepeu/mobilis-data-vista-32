@@ -24,6 +24,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import TermsModal from '@/components/TermsModal';
 import VerificationModal from '@/components/VerificationModal';
 import ConsultationReport from '@/components/ConsultationReport';
+import ConsultationResults from '@/components/ConsultationResults';
 import ReportTemplate from '@/components/ReportTemplate';
 import { generatePDF, ReportData } from '@/components/PDFGenerator';
 import { supabase } from '@/integrations/supabase/client';

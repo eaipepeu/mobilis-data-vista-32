@@ -331,6 +331,42 @@ export type Database = {
           },
         ]
       }
+      payment_tokens: {
+        Row: {
+          amount_cents: number
+          created_at: string | null
+          email: string
+          expires_at: string
+          id: string
+          plan_id: string | null
+          token: string
+          user_id: string | null
+          verified_at: string | null
+        }
+        Insert: {
+          amount_cents: number
+          created_at?: string | null
+          email: string
+          expires_at?: string
+          id?: string
+          plan_id?: string | null
+          token: string
+          user_id?: string | null
+          verified_at?: string | null
+        }
+        Update: {
+          amount_cents?: number
+          created_at?: string | null
+          email?: string
+          expires_at?: string
+          id?: string
+          plan_id?: string | null
+          token?: string
+          user_id?: string | null
+          verified_at?: string | null
+        }
+        Relationships: []
+      }
       payments: {
         Row: {
           amount_cents: number
