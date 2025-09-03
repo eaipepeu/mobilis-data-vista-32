@@ -14,6 +14,48 @@ export type Database = {
   }
   public: {
     Tables: {
+      api_consultations: {
+        Row: {
+          api_name: string
+          created_at: string | null
+          endpoint: string
+          error_message: string | null
+          execution_time_ms: number | null
+          id: number
+          ip_address: string | null
+          request_payload: Json | null
+          response_payload: Json | null
+          status_code: number | null
+          user_id: string | null
+        }
+        Insert: {
+          api_name: string
+          created_at?: string | null
+          endpoint: string
+          error_message?: string | null
+          execution_time_ms?: number | null
+          id?: never
+          ip_address?: string | null
+          request_payload?: Json | null
+          response_payload?: Json | null
+          status_code?: number | null
+          user_id?: string | null
+        }
+        Update: {
+          api_name?: string
+          created_at?: string | null
+          endpoint?: string
+          error_message?: string | null
+          execution_time_ms?: number | null
+          id?: never
+          ip_address?: string | null
+          request_payload?: Json | null
+          response_payload?: Json | null
+          status_code?: number | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       consultation_types: {
         Row: {
           created_at: string
@@ -74,6 +116,24 @@ export type Database = {
           result_data?: Json | null
           status?: string | null
           user_id?: string
+        }
+        Relationships: []
+      }
+      conversations: {
+        Row: {
+          created_at: string
+          id: string
+          title: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          title?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          title?: string | null
         }
         Relationships: []
       }
@@ -175,6 +235,45 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      messages: {
+        Row: {
+          content: string
+          conversation_id: string
+          created_at: string
+          id: string
+          sender_id: string
+        }
+        Insert: {
+          content: string
+          conversation_id: string
+          created_at?: string
+          id?: string
+          sender_id: string
+        }
+        Update: {
+          content?: string
+          conversation_id?: string
+          created_at?: string
+          id?: string
+          sender_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "messages_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "conversations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "messages_sender_id_fkey"
+            columns: ["sender_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       orders: {
         Row: {
@@ -681,8 +780,10 @@ export type Database = {
         }[]
       }
       deduct_user_credits: {
-        Args: { amount_cents: number; description: string; user_id: string }
-        Returns: boolean
+        Args:
+          | { amount_cents: number; description: string; user_id: string }
+          | { p_amount: number; p_user_id: string }
+        Returns: undefined
       }
       generate_verification_token: {
         Args: { p_token_type: string }
@@ -690,6 +791,22 @@ export type Database = {
           expires_at: string
           token: string
         }[]
+      }
+      log_api_consultation: {
+        Args:
+          | {
+              p_api_name: string
+              p_endpoint: string
+              p_error_message?: string
+              p_execution_time_ms?: number
+              p_ip_address?: string
+              p_request_payload: Json
+              p_response_payload: Json
+              p_status_code: number
+              p_user_id: string
+            }
+          | { p_endpoint: string; p_status: number; p_user_id: string }
+        Returns: undefined
       }
       log_user_agreement: {
         Args: {
