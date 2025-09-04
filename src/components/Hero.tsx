@@ -2,13 +2,22 @@ import { Button } from '@/components/ui/button';
 import { Search, Shield, Clock, CheckCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import heroImage from '@/assets/hero-bg.jpg';
+
 const Hero = () => {
-  const features = ['Resultados instantâneos', 'Máxima segurança SSL', 'Conformidade LGPD', 'Suporte 24/7'];
-  return <section id="hero" className="relative min-h-screen flex items-center overflow-hidden">
+  const features = [
+    'Resultados instantâneos',
+    'Máxima segurança SSL',
+    'Conformidade LGPD',
+    'Suporte 24/7'
+  ];
+
+  return (
+    <section id="hero" className="relative min-h-screen flex items-center overflow-hidden">
       {/* Background with overlay */}
-      <div className="absolute inset-0 bg-cover bg-center bg-no-repeat" style={{
-      backgroundImage: `url(${heroImage})`
-    }}>
+      <div 
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: `url(${heroImage})` }}
+      >
         <div className="absolute inset-0 bg-gradient-to-r from-primary/90 via-primary/80 to-trust/70"></div>
       </div>
 
@@ -30,10 +39,12 @@ const Hero = () => {
 
             {/* Features list */}
             <div className="grid sm:grid-cols-2 gap-3">
-              {features.map(feature => <div key={feature} className="flex items-center space-x-3">
+              {features.map((feature) => (
+                <div key={feature} className="flex items-center space-x-3">
                   <CheckCircle className="w-5 h-5 text-secondary" />
                   <span className="text-white/90">{feature}</span>
-                </div>)}
+                </div>
+              ))}
             </div>
 
             {/* CTA Buttons */}
@@ -44,7 +55,7 @@ const Hero = () => {
                   Fazer Consulta Agora
                 </Button>
               </Link>
-              <Button variant="outline" size="lg" className="w-full sm:w-auto border-white hover:bg-white text-black text-base">
+              <Button variant="outline" size="lg" className="w-full sm:w-auto border-white text-white hover:bg-white hover:text-primary">
                 <Shield className="w-5 h-5 mr-2" />
                 Ver Planos
               </Button>
@@ -95,7 +106,11 @@ const Hero = () => {
                   <label className="block text-sm font-medium text-foreground mb-2">
                     Digite os dados
                   </label>
-                  <input type="text" placeholder="Ex: 000.000.000-00" className="w-full p-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent" />
+                  <input
+                    type="text"
+                    placeholder="Ex: 000.000.000-00"
+                    className="w-full p-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                  />
                 </div>
 
                 <Link to="/dashboard" className="block">
@@ -120,6 +135,8 @@ const Hero = () => {
           <div className="w-1 h-3 bg-white/70 rounded-full mt-2 animate-pulse"></div>
         </div>
       </div>
-    </section>;
+    </section>
+  );
 };
+
 export default Hero;

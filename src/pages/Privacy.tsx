@@ -1,125 +1,218 @@
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-import { Card, CardContent } from "@/components/ui/card";
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
+import { Card, CardContent } from '@/components/ui/card';
+import { Shield, Lock, Eye, Users, Database, Mail } from 'lucide-react';
 
 const Privacy = () => {
+  const principles = [
+    {
+      icon: Lock,
+      title: "Criptografia Avançada",
+      description: "Todos os dados são criptografados com algoritmos de última geração"
+    },
+    {
+      icon: Eye,
+      title: "Acesso Restrito",
+      description: "Apenas pessoal autorizado tem acesso às informações dos usuários"
+    },
+    {
+      icon: Database,
+      title: "Armazenamento Seguro",
+      description: "Dados armazenados em servidores certificados com backup redundante"
+    },
+    {
+      icon: Users,
+      title: "Controle do Usuário",
+      description: "Você tem total controle sobre seus dados pessoais"
+    }
+  ];
+
   return (
     <div className="min-h-screen bg-background">
       <Header />
-      <main className="container mx-auto px-4 py-12">
-        <div className="max-w-4xl mx-auto">
-          <h1 className="text-4xl font-bold text-center mb-8">
-            📄 Política de Privacidade
-          </h1>
-          
-          <Card className="mb-8">
-            <CardContent className="p-8">
-              <div className="space-y-8">
-                
-                <section>
-                  <h2 className="text-2xl font-semibold mb-4">1. Introdução</h2>
-                  <p className="text-muted-foreground leading-relaxed">
-                    A Mobilis Consultas valoriza a privacidade e a proteção de dados pessoais. Esta Política 
-                    descreve de forma clara como coletamos, usamos, armazenamos e compartilhamos suas 
-                    informações, de acordo com a Lei Geral de Proteção de Dados Pessoais (Lei nº 13.709/2018 – LGPD).
-                  </p>
-                </section>
+      
+      <main className="pt-20">
+        {/* Hero Section */}
+        <section className="bg-gradient-hero text-white py-16">
+          <div className="container mx-auto px-4 text-center">
+            <Shield className="w-16 h-16 mx-auto mb-6 text-white/90" />
+            <h1 className="text-4xl md:text-6xl font-bold mb-6">
+              Política de Privacidade
+            </h1>
+            <p className="text-xl text-white/90 max-w-2xl mx-auto">
+              Seu direito à privacidade é nossa prioridade. Entenda como protegemos seus dados.
+            </p>
+          </div>
+        </section>
 
-                <section>
-                  <h2 className="text-2xl font-semibold mb-4">2. Informações que Coletamos</h2>
-                  <ul className="list-disc pl-6 space-y-2 text-muted-foreground">
-                    <li>Dados de identificação: nome, e-mail, CPF/CNPJ, telefone.</li>
-                    <li>Dados de navegação e uso: histórico de consultas, endereço IP, cookies e registros de acesso.</li>
-                    <li>Dados financeiros: informações necessárias para parcelamento de débitos ou contratação de serviços.</li>
-                  </ul>
-                </section>
+        {/* Principles */}
+        <section className="py-16">
+          <div className="container mx-auto px-4">
+            <h2 className="text-3xl font-bold text-center mb-12">
+              Nossos Princípios de Privacidade
+            </h2>
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
+              {principles.map((principle, index) => (
+                <Card key={index} className="text-center">
+                  <CardContent className="pt-6">
+                    <principle.icon className="w-12 h-12 text-primary mx-auto mb-4" />
+                    <h3 className="text-lg font-semibold mb-2">{principle.title}</h3>
+                    <p className="text-sm text-muted-foreground">{principle.description}</p>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+        </section>
 
-                <section>
-                  <h2 className="text-2xl font-semibold mb-4">3. Finalidade e Bases Legais</h2>
-                  <p className="text-muted-foreground mb-4">
-                    Tratamos seus dados pessoais apenas para as finalidades descritas abaixo:
-                  </p>
-                  <ul className="list-disc pl-6 space-y-2 text-muted-foreground">
-                    <li><strong>Execução de contrato:</strong> viabilizar a prestação dos serviços contratados.</li>
-                    <li><strong>Cumprimento de obrigação legal:</strong> atender determinações legais e regulatórias.</li>
-                    <li><strong>Interesse Legítimo:</strong> melhorar a experiência de navegação e prevenir fraudes.</li>
-                    <li><strong>Consentimento:</strong> envio de comunicações de marketing, quando autorizado pelo titular.</li>
-                  </ul>
-                </section>
+        {/* Privacy Policy Content */}
+        <section className="py-16 bg-muted/50">
+          <div className="container mx-auto px-4">
+            <div className="max-w-4xl mx-auto">
+              <Card>
+                <CardContent className="p-8 space-y-8">
+                  <div>
+                    <h2 className="text-2xl font-bold mb-4 text-primary">1. Informações que Coletamos</h2>
+                    <div className="space-y-4 text-muted-foreground">
+                      <p>
+                        <strong>Dados Pessoais:</strong> Nome completo, CPF, RG, endereço, telefone, email, data de nascimento.
+                      </p>
+                      <p>
+                        <strong>Dados de Navegação:</strong> Endereço IP, tipo de navegador, páginas visitadas, tempo de permanência.
+                      </p>
+                      <p>
+                        <strong>Dados de Consulta:</strong> Histórico de consultas realizadas, dados consultados, resultados obtidos.
+                      </p>
+                      <p>
+                        <strong>Dados de Pagamento:</strong> Informações de cartão de crédito (criptografadas), histórico de transações.
+                      </p>
+                    </div>
+                  </div>
 
-                <section>
-                  <h2 className="text-2xl font-semibold mb-4">4. Compartilhamento de Dados</h2>
-                  <p className="text-muted-foreground mb-4">
-                    Seus dados poderão ser compartilhados apenas com:
-                  </p>
-                  <ul className="list-disc pl-6 space-y-2 text-muted-foreground">
-                    <li>Fontes oficiais e parceiros necessários para a execução dos serviços.</li>
-                    <li>Autoridades governamentais, mediante obrigação legal.</li>
-                    <li>Provedores de tecnologia, hospedagem em nuvem e meios de pagamento, sempre respeitando a LGPD.</li>
-                  </ul>
-                </section>
+                  <div>
+                    <h2 className="text-2xl font-bold mb-4 text-primary">2. Como Utilizamos suas Informações</h2>
+                    <div className="space-y-3 text-muted-foreground">
+                      <p>• <strong>Prestação de Serviços:</strong> Para processar consultas e fornecer resultados precisos</p>
+                      <p>• <strong>Autenticação:</strong> Para verificar sua identidade e garantir a segurança da conta</p>
+                      <p>• <strong>Pagamentos:</strong> Para processar transações e emitir comprovantes</p>
+                      <p>• <strong>Comunicação:</strong> Para enviar notificações importantes e suporte ao cliente</p>
+                      <p>• <strong>Melhorias:</strong> Para aprimorar nossos serviços e experiência do usuário</p>
+                      <p>• <strong>Conformidade Legal:</strong> Para cumprir obrigações legais e regulamentares</p>
+                    </div>
+                  </div>
 
-                <section>
-                  <h2 className="text-2xl font-semibold mb-4">5. Transferência Internacional de Dados</h2>
-                  <p className="text-muted-foreground leading-relaxed">
-                    Caso haja necessidade de armazenar informações em servidores localizados fora do Brasil, 
-                    asseguramos que o tratamento seguirá as salvaguardas previstas na LGPD (art. 33 e seguintes).
-                  </p>
-                </section>
+                  <div>
+                    <h2 className="text-2xl font-bold mb-4 text-primary">3. Compartilhamento de Dados</h2>
+                    <div className="space-y-4 text-muted-foreground">
+                      <p>
+                        <strong>NÃO compartilhamos seus dados pessoais</strong> com terceiros para fins comerciais, 
+                        exceto nas seguintes situações específicas:
+                      </p>
+                      <p>• <strong>Órgãos Oficiais:</strong> Quando solicitado por autoridades competentes</p>
+                      <p>• <strong>Processadores de Pagamento:</strong> Para validar transações (dados criptografados)</p>
+                      <p>• <strong>Parceiros Técnicos:</strong> Prestadores de serviços que auxiliam nossa operação (sob rigoroso contrato de confidencialidade)</p>
+                      <p>• <strong>Emergências:</strong> Para proteger a segurança ou direitos legais nossos ou de terceiros</p>
+                    </div>
+                  </div>
 
-                <section>
-                  <h2 className="text-2xl font-semibold mb-4">6. Prazo de Retenção</h2>
-                  <p className="text-muted-foreground leading-relaxed">
-                    Os dados serão armazenados apenas pelo tempo necessário para o cumprimento das finalidades 
-                    descritas ou enquanto durar a relação contratual. Após esse prazo, serão eliminados ou 
-                    anonimizados, salvo obrigação legal de retenção.
-                  </p>
-                </section>
+                  <div>
+                    <h2 className="text-2xl font-bold mb-4 text-primary">4. Seus Direitos (LGPD)</h2>
+                    <div className="space-y-3 text-muted-foreground">
+                      <p>• <strong>Acesso:</strong> Solicitar informações sobre o tratamento de seus dados</p>
+                      <p>• <strong>Correção:</strong> Corrigir dados incompletos, inexatos ou desatualizados</p>
+                      <p>• <strong>Anonimização:</strong> Solicitar a anonimização de dados desnecessários</p>
+                      <p>• <strong>Eliminação:</strong> Requerer a exclusão de dados pessoais</p>
+                      <p>• <strong>Portabilidade:</strong> Solicitar a transferência de dados para outro fornecedor</p>
+                      <p>• <strong>Revogação:</strong> Revogar o consentimento a qualquer momento</p>
+                    </div>
+                  </div>
 
-                <section>
-                  <h2 className="text-2xl font-semibold mb-4">7. Direitos do Titular</h2>
-                  <p className="text-muted-foreground mb-4">
-                    Você pode, a qualquer momento:
-                  </p>
-                  <ul className="list-disc pl-6 space-y-2 text-muted-foreground">
-                    <li>Solicitar confirmação da existência de tratamento.</li>
-                    <li>Solicitar acesso, correção, exclusão ou portabilidade de seus dados.</li>
-                    <li>Revogar o consentimento dado anteriormente.</li>
-                    <li>Opor-se a certos tratamentos.</li>
-                  </ul>
-                </section>
+                  <div>
+                    <h2 className="text-2xl font-bold mb-4 text-primary">5. Segurança dos Dados</h2>
+                    <div className="space-y-4 text-muted-foreground">
+                      <p>
+                        Implementamos múltiplas camadas de segurança para proteger suas informações:
+                      </p>
+                      <p>• <strong>Criptografia SSL/TLS:</strong> Proteção durante a transmissão</p>
+                      <p>• <strong>Criptografia AES-256:</strong> Proteção durante o armazenamento</p>
+                      <p>• <strong>Autenticação Multifator:</strong> Acesso seguro às contas</p>
+                      <p>• <strong>Monitoramento 24/7:</strong> Detecção de atividades suspeitas</p>
+                      <p>• <strong>Backups Seguros:</strong> Redundância e recuperação de dados</p>
+                      <p>• <strong>Auditoria Regular:</strong> Verificações periódicas de segurança</p>
+                    </div>
+                  </div>
 
-                <section>
-                  <h2 className="text-2xl font-semibold mb-4">8. Segurança dos Dados</h2>
-                  <p className="text-muted-foreground leading-relaxed">
-                    Adotamos medidas técnicas e organizacionais adequadas, incluindo criptografia, firewall, 
-                    certificação SSL e monitoramento contínuo para prevenção de incidentes.
-                  </p>
-                </section>
+                  <div>
+                    <h2 className="text-2xl font-bold mb-4 text-primary">6. Retenção de Dados</h2>
+                    <div className="space-y-4 text-muted-foreground">
+                      <p>
+                        Mantemos seus dados apenas pelo tempo necessário para:
+                      </p>
+                      <p>• <strong>Dados de Conta:</strong> Enquanto a conta estiver ativa + 5 anos após encerramento</p>
+                      <p>• <strong>Histórico de Consultas:</strong> 5 anos para fins de auditoria e conformidade</p>
+                      <p>• <strong>Dados de Pagamento:</strong> Conforme exigências fiscais (até 5 anos)</p>
+                      <p>• <strong>Logs de Segurança:</strong> 2 anos para investigações de segurança</p>
+                    </div>
+                  </div>
 
-                <section>
-                  <h2 className="text-2xl font-semibold mb-4">9. Encarregado pelo Tratamento de Dados (DPO)</h2>
-                  <p className="text-muted-foreground mb-4">
-                    Para exercer seus direitos ou esclarecer dúvidas, entre em contato com nosso Encarregado de Dados (DPO):
-                  </p>
-                  <p className="text-primary font-semibold">📧 dpo@mobilisconsultas.com.br</p>
-                </section>
+                  <div>
+                    <h2 className="text-2xl font-bold mb-4 text-primary">7. Cookies e Tecnologias Similares</h2>
+                    <div className="space-y-4 text-muted-foreground">
+                      <p>
+                        Utilizamos cookies para melhorar sua experiência:
+                      </p>
+                      <p>• <strong>Cookies Essenciais:</strong> Necessários para o funcionamento do site</p>
+                      <p>• <strong>Cookies de Performance:</strong> Para análise e melhoria dos serviços</p>
+                      <p>• <strong>Cookies de Personalização:</strong> Para customizar sua experiência</p>
+                      <p>
+                        Você pode gerenciar suas preferências de cookies nas configurações do navegador.
+                      </p>
+                    </div>
+                  </div>
 
-                <section>
-                  <h2 className="text-2xl font-semibold mb-4">10. Atualizações desta Política</h2>
-                  <p className="text-muted-foreground leading-relaxed">
-                    Esta Política poderá ser atualizada periodicamente. Alterações relevantes serão comunicadas 
-                    de forma clara aos usuários.
-                  </p>
-                </section>
+                  <div>
+                    <h2 className="text-2xl font-bold mb-4 text-primary">8. Alterações na Política</h2>
+                    <div className="space-y-4 text-muted-foreground">
+                      <p>
+                        Esta política pode ser atualizada periodicamente. Quando isso ocorrer:
+                      </p>
+                      <p>• Notificaremos por email sobre mudanças significativas</p>
+                      <p>• A nova versão será publicada em nosso site</p>
+                      <p>• A data de "última atualização" será modificada</p>
+                    </div>
+                  </div>
 
-              </div>
-            </CardContent>
-          </Card>
-        </div>
+                  <div className="bg-primary/10 p-6 rounded-lg">
+                    <div className="flex items-start gap-4">
+                      <Mail className="w-6 h-6 text-primary flex-shrink-0 mt-1" />
+                      <div>
+                        <h3 className="font-bold text-primary mb-2">Contato do Encarregado de Dados</h3>
+                        <p className="text-sm text-muted-foreground mb-2">
+                          Para exercer seus direitos ou esclarecer dúvidas sobre esta política:
+                        </p>
+                        <p className="text-sm">
+                          <strong>Email:</strong> dpo@mobilisconsultas.com.br<br />
+                          <strong>Telefone:</strong> (11) 97777-7777<br />
+                          <strong>Horário:</strong> Segunda a Sexta, 9h às 18h
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="text-center text-sm text-muted-foreground pt-8 border-t">
+                    <p><strong>Última atualização:</strong> Janeiro de 2025</p>
+                    <p><strong>Versão:</strong> 2.0</p>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        </section>
       </main>
+
       <Footer />
     </div>
   );
-}
+};
 
+export default Privacy;
