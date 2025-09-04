@@ -20,5 +20,4 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
           cname: www.mobilisconsultas.com.br
-
           Commit changes
