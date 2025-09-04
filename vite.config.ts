@@ -24,3 +24,4 @@ export default defineConfig(({ base: '/mobilis-data-vista-32/', }) => ({
     },
   },
 }));
+Configura base path para o GitHub Pages
