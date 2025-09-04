@@ -1,14 +1,10 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react-swc";
+import path from "path";
+import { componentTagger } from "lovable-tagger";
 
 // https://vitejs.dev/config/
-export default defineConfig({
-  base: '/mobilis-data-vista-32/', // Adicione esta linha
-  plugins: [react()],
-})
-
-// https://vitejs.dev/config/
-export default defineConfig(({ base: '/mobilis-data-vista-32/', }) => ({
+export default defineConfig(({ mode }) => ({
   server: {
     host: "::",
     port: 8080,
@@ -24,6 +20,3 @@ export default defineConfig(({ base: '/mobilis-data-vista-32/', }) => ({
     },
   },
 }));
-Configura base path para o GitHub Pages
- 
- 
