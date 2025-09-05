@@ -102,7 +102,7 @@ const Dashboard = () => {
     { id: 'cpf', name: 'CPF', icon: User, price: 'R$ 15,00' },
     { id: 'cnpj', name: 'CNPJ', icon: Building2, price: 'R$ 25,00' },
     { id: 'veiculo', name: 'Veículo', icon: Car, price: 'R$ 18,00' },
-    { id: 'imoveis', name: 'Imóveis', icon: Home, price: 'R$ 20,00' },
+    { id: 'imoveis', name: 'Imóveis', icon: Home, price: 'R$ 85,00' },
     { id: 'protestos', name: 'Protestos', icon: FileText, price: 'R$ 10,00' },
     { id: 'regularidade', name: 'Regularidade', icon: CheckCircle, price: 'R$ 12,00' }
   ];
