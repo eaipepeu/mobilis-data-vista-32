@@ -4,17 +4,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { 
-  Mail, 
-  Phone, 
-  MapPin, 
-  Clock,
-  MessageCircle,
-  ArrowLeft,
-  Send
-} from 'lucide-react';
+import { Mail, Phone, MapPin, Clock, MessageCircle, ArrowLeft, Send } from 'lucide-react';
 import { Link } from 'react-router-dom';
-
 const Contact = () => {
   const [formData, setFormData] = useState({
     name: '',
@@ -22,26 +13,21 @@ const Contact = () => {
     email: '',
     description: ''
   });
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // Handle form submission
     console.log('Form submitted:', formData);
   };
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
     });
   };
-
   const whatsappNumber = "5511999999999"; // Replace with actual WhatsApp number
   const whatsappMessage = `Olá! Gostaria de saber mais sobre os serviços da Mobilis Consultas.`;
   const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`;
-
-  return (
-    <div className="min-h-screen bg-muted/30">
+  return <div className="min-h-screen bg-muted/30">
       {/* Header */}
       <header className="bg-white shadow-sm border-b">
         <div className="container mx-auto px-4">
@@ -52,11 +38,7 @@ const Contact = () => {
                 Voltar ao início
               </Link>
               <div className="hidden sm:block">
-                <img 
-                  src="/lovable-uploads/d95e1fef-1a1c-4f82-a6c9-5c5655ed82d8.png" 
-                  alt="Mobilis Consultas" 
-                  className="h-8 w-auto"
-                />
+                <img src="/lovable-uploads/d95e1fef-1a1c-4f82-a6c9-5c5655ed82d8.png" alt="Mobilis Consultas" className="h-8 w-auto" />
               </div>
             </div>
           </div>
@@ -88,53 +70,22 @@ const Contact = () => {
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div className="space-y-2">
                     <Label htmlFor="name">Nome *</Label>
-                    <Input
-                      id="name"
-                      name="name"
-                      value={formData.name}
-                      onChange={handleChange}
-                      placeholder="Seu nome completo"
-                      required
-                    />
+                    <Input id="name" name="name" value={formData.name} onChange={handleChange} placeholder="Seu nome completo" required />
                   </div>
 
                   <div className="space-y-2">
                     <Label htmlFor="phone">Telefone *</Label>
-                    <Input
-                      id="phone"
-                      name="phone"
-                      value={formData.phone}
-                      onChange={handleChange}
-                      placeholder="(11) 99999-9999"
-                      required
-                    />
+                    <Input id="phone" name="phone" value={formData.phone} onChange={handleChange} placeholder="(11) 99999-9999" required />
                   </div>
 
                   <div className="space-y-2">
                     <Label htmlFor="email">E-mail *</Label>
-                    <Input
-                      id="email"
-                      name="email"
-                      type="email"
-                      value={formData.email}
-                      onChange={handleChange}
-                      placeholder="seu@email.com"
-                      required
-                    />
+                    <Input id="email" name="email" type="email" value={formData.email} onChange={handleChange} placeholder="seu@email.com" required />
                   </div>
 
                   <div className="space-y-2">
                     <Label htmlFor="description">Descrição *</Label>
-                    <Textarea
-                      id="description"
-                      name="description"
-                      value={formData.description}
-                      onChange={handleChange}
-                      placeholder="Descreva como podemos ajudá-lo..."
-                      maxLength={250}
-                      rows={4}
-                      required
-                    />
+                    <Textarea id="description" name="description" value={formData.description} onChange={handleChange} placeholder="Descreva como podemos ajudá-lo..." maxLength={250} rows={4} required />
                     <div className="text-xs text-muted-foreground text-right">
                       {formData.description.length}/250 caracteres
                     </div>
@@ -152,12 +103,7 @@ const Contact = () => {
                     <p className="text-sm text-muted-foreground mb-3">
                       Prefere falar diretamente conosco?
                     </p>
-                    <a
-                      href={whatsappUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-block"
-                    >
+                    <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="inline-block">
                       <Button variant="consultation" className="w-full">
                         <MessageCircle className="w-4 h-4 mr-2" />
                         Conversar no WhatsApp
@@ -180,7 +126,7 @@ const Contact = () => {
                     <Phone className="w-5 h-5 text-primary mt-1" />
                     <div>
                       <div className="font-semibold">Telefone</div>
-                      <div className="text-muted-foreground">(11) 99999-9999</div>
+                      <div className="text-muted-foreground">(11) 98116-2006</div>
                       <div className="text-sm text-muted-foreground">
                         Ligações e WhatsApp
                       </div>
@@ -285,8 +231,6 @@ const Contact = () => {
           </div>
         </div>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default Contact;
