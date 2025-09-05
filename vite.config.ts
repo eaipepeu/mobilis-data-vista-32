@@ -22,28 +22,32 @@ export default defineConfig(({ mode }) => ({
   build: {
     outDir: 'dist',
     assetsDir: 'assets',
-    minify: 'terser',
-    sourcemap: false,
+    minify: mode === 'production' ? 'terser' : false,
+    sourcemap: mode === 'development',
     chunkSizeWarningLimit: 1600,
     rollupOptions: {
       output: {
         manualChunks: {
           vendor: ['react', 'react-dom'],
           router: ['react-router-dom'],
-          ui: ['@radix-ui/react-dialog', '@radix-ui/react-button', '@radix-ui/react-card'],
           supabase: ['@supabase/supabase-js'],
-          utils: ['class-variance-authority', 'clsx', 'tailwind-merge']
+          query: ['@tanstack/react-query'],
+          utils: ['class-variance-authority', 'clsx', 'tailwind-merge'],
+          forms: ['react-hook-form', '@hookform/resolvers'],
+          icons: ['lucide-react']
         }
       }
     },
-    terserOptions: {
-      compress: {
-        drop_console: mode === 'production',
-        drop_debugger: mode === 'production'
+    ...(mode === 'production' && {
+      terserOptions: {
+        compress: {
+          drop_console: true,
+          drop_debugger: true
+        }
       }
-    }
+    })
   },
   optimizeDeps: {
-    include: ['react', 'react-dom', 'react-router-dom']
+    include: ['react', 'react-dom', 'react-router-dom', '@supabase/supabase-js']
   }
 }));
