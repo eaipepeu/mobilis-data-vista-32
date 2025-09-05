@@ -110,7 +110,7 @@ const Pricing = () => {
   };
 
   const handlePurchase = (packageTitle: string, price: string) => {
-    navigate('/payment', { 
+    navigate('/mercadopago-payment', { 
       state: { 
         packageTitle, 
         price: price.replace('R$ ', ''),

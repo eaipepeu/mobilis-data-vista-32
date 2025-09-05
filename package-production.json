@@ -1,0 +1,44 @@
+{
+  "name": "mobilis-consultas-production",
+  "version": "1.0.0",
+  "description": "Sistema de consultas profissionais - Build de produção otimizado para LocaWeb",
+  "scripts": {
+    "build": "vite build --mode production",
+    "build:production": "node build-production.js",
+    "preview": "vite preview",
+    "serve": "vite preview --port 4173 --host"
+  },
+  "build": {
+    "outDir": "dist",
+    "assetsDir": "assets",
+    "minify": true,
+    "sourcemap": false,
+    "rollupOptions": {
+      "output": {
+        "manualChunks": {
+          "vendor": ["react", "react-dom"],
+          "ui": ["@radix-ui/react-dialog", "@radix-ui/react-button"],
+          "router": ["react-router-dom"],
+          "forms": ["react-hook-form"],
+          "icons": ["lucide-react"]
+        }
+      }
+    }
+  },
+  "author": "Mobilis Consultas",
+  "license": "Private",
+  "homepage": "https://www.mobilisconsultas.com.br",
+  "repository": {
+    "type": "git",
+    "url": "private"
+  },
+  "keywords": [
+    "consultas",
+    "cpf",
+    "cnpj",
+    "veiculos",
+    "brasil",
+    "dados",
+    "profissional"
+  ]
+}

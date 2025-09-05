@@ -13,6 +13,8 @@ import Privacy from "./pages/Privacy";
 import LGPD from "./pages/LGPD";
 import Certifications from "./pages/Certifications";
 import Contact from "./pages/Contact";
+import Payment from "./pages/Payment";
+import MercadoPagoPayment from "./pages/MercadoPagoPayment";
 import NotFound from "./pages/NotFound";
 import SupportFloat from "@/components/SupportFloat";
 
@@ -35,6 +37,8 @@ const App = () => (
           <Route path="/lgpd" element={<LGPD />} />
           <Route path="/certifications" element={<Certifications />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/payment" element={<Payment />} />
+          <Route path="/mercadopago-payment" element={<MercadoPagoPayment />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
