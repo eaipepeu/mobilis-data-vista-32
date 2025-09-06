@@ -73,13 +73,9 @@ serve(async (req) => {
       throw new Error("Token do MercadoPago não configurado");
     }
 
-    const payment_data = {
+    let payment_data: any = {
       transaction_amount: Number(paymentData.transactionAmount),
-      token: paymentData.token,
       description: paymentData.description,
-      installments: Number(paymentData.installments),
-      payment_method_id: paymentData.paymentMethodId,
-      issuer_id: paymentData.issuer,
       payer: {
         email: paymentData.payer.email,
         identification: {
@@ -88,6 +84,20 @@ serve(async (req) => {
         },
       },
     };
+
+    // Handle different payment methods
+    if (paymentData.paymentMethodId === 'pix') {
+      payment_data.payment_method_id = 'pix';
+    } else if (paymentData.paymentMethodId === 'bolbradesco') {
+      payment_data.payment_method_id = 'bolbradesco';
+      payment_data.date_of_expiration = new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString(); // 3 days expiry
+    } else {
+      // Credit card payment
+      payment_data.token = paymentData.token;
+      payment_data.installments = Number(paymentData.installments);
+      payment_data.payment_method_id = paymentData.paymentMethodId;
+      payment_data.issuer_id = paymentData.issuer;
+    }
 
     const mpResponse = await fetch("https://api.mercadopago.com/v1/payments", {
       method: "POST",

@@ -85,9 +85,14 @@ const Hero = () => {
                     Tipo de Consulta
                   </label>
                   <select className="w-full p-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
-                    <option>CPF</option>
-                    <option>CNPJ</option>
-                    <option>Placa do Veículo</option>
+                    <option>CPF Simples - R$ 3,12</option>
+                    <option>CPF Completo - R$ 7,50</option>
+                    <option>CNPJ Simples - R$ 8,00</option>
+                    <option>CNPJ Completo - R$ 17,00</option>
+                    <option>Veículo Básico - R$ 17,00</option>
+                    <option>Veículo Master - R$ 35,00</option>
+                    <option>Imóveis - R$ 85,00</option>
+                    <option>Protesto Nacional - R$ 10,00</option>
                   </select>
                 </div>
 
@@ -106,7 +111,7 @@ const Hero = () => {
                 </Link>
 
                 <p className="text-xs text-muted-foreground text-center">
-                  Primeira consulta gratuita para novos usuários
+                  Com validação de identidade e conformidade LGPD
                 </p>
               </div>
             </div>

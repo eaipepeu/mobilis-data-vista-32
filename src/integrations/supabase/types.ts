@@ -14,6 +14,36 @@ export type Database = {
   }
   public: {
     Tables: {
+      api_configurations: {
+        Row: {
+          api_name: string
+          created_at: string | null
+          endpoint: string
+          id: string
+          is_active: boolean | null
+          token_secret_name: string
+          updated_at: string | null
+        }
+        Insert: {
+          api_name: string
+          created_at?: string | null
+          endpoint: string
+          id?: string
+          is_active?: boolean | null
+          token_secret_name: string
+          updated_at?: string | null
+        }
+        Update: {
+          api_name?: string
+          created_at?: string | null
+          endpoint?: string
+          id?: string
+          is_active?: boolean | null
+          token_secret_name?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       api_consultations: {
         Row: {
           api_name: string

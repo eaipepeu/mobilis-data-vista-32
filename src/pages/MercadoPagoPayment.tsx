@@ -50,7 +50,8 @@ const MercadoPagoPayment = () => {
   }, []);
 
   const initializeMercadoPago = () => {
-    const mp = new window.MercadoPago('TEST-4202d489-c5c5-4899-b7a3-e188e5b7acd8', {
+    // Using production credentials - replace with actual production key
+    const mp = new window.MercadoPago('APP_USR-1234567890abcdef1234567890abcdef', {
       locale: 'pt-BR',
     });
 

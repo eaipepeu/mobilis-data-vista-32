@@ -18,45 +18,59 @@ const Services = () => {
   const services = [
     {
       icon: User,
-      title: 'Consulta de CPF',
-      description: 'Dados cadastrais completos, score de crédito, endereços, telefones, empresas vinculadas e título de eleitor.',
-      price: 'R$ 15,00',
-      features: ['Dados pessoais', 'Score de crédito', 'Histórico financeiro', 'Protestos']
+      title: 'CPF Simples',
+      description: 'Dados cadastrais e dívidas básicas (sem informações do credor).',
+      price: 'R$ 3,12',
+      features: ['Dados pessoais', 'Dívidas básicas', 'Score de crédito', 'Endereços']
+    },
+    {
+      icon: User,
+      title: 'CPF Completo',
+      description: 'Dados cadastrais completos, dívidas e telefones dos credores.',
+      price: 'R$ 7,50',
+      features: ['Dados pessoais', 'Score de crédito', 'Histórico financeiro', 'Telefones credores']
     },
     {
       icon: Building2,
-      title: 'Consulta de CNPJ',
-      description: 'Quadro societário, dados de contato, endereços, pendências financeiras e histórico empresarial.',
-      price: 'R$ 25,00',
-      features: ['Quadro societário', 'Situação fiscal', 'Pendências', 'Histórico']
+      title: 'CNPJ Simples',
+      description: 'Quadro societário e dívidas básicas (sem informações do credor).',
+      price: 'R$ 8,00',
+      features: ['Quadro societário', 'Situação fiscal', 'Dívidas básicas', 'Dados de contato']
+    },
+    {
+      icon: Building2,
+      title: 'CNPJ Completo',
+      description: 'Dados completos incluindo credores e telefones para contato.',
+      price: 'R$ 17,00',
+      features: ['Quadro societário', 'Situação fiscal', 'Pendências completas', 'Telefones credores']
     },
     {
       icon: Car,
-      title: 'Consulta de Veículo',
-      description: 'Histórico completo por placa, débitos, multas, licenciamento, leilões e sinistros.',
-      price: 'R$ 18,00',
-      features: ['Débitos IPVA', 'Multas pendentes', 'Histórico de leilão', 'CRLV-e']
+      title: 'Veículo Básico',
+      description: 'Consulta básica com multas e CRLV.',
+      price: 'R$ 17,00',
+      features: ['Multas pendentes', 'CRLV-e', 'Dados do veículo', 'Licenciamento']
     },
     {
-      icon: Search,
-      title: 'Proprietário pela Placa',
-      description: 'Identifique o proprietário atual do veículo através da placa com dados completos.',
-      price: 'R$ 12,00',
-      features: ['Dados do proprietário', 'Endereço atual', 'Histórico de propriedade']
+      icon: Car,
+      title: 'Veículo Master',
+      description: 'Consulta completa incluindo sinistros e débitos IPVA.',
+      price: 'R$ 35,00',
+      features: ['Multas', 'CRLV-e', 'Sinistros', 'Débitos IPVA']
     },
     {
       icon: Home,
       title: 'Bens Imóveis',
-      description: 'Consulta completa de imóveis vinculados ao CPF ou CNPJ, incluindo valores e localizações.',
-      price: 'R$ 20,00',
-      features: ['Propriedades vinculadas', 'Valores de mercado', 'Situação legal']
+      description: 'Consulta completa de imóveis vinculados ao CPF ou CNPJ.',
+      price: 'R$ 85,00',
+      features: ['Propriedades vinculadas', 'Valores de mercado', 'Situação legal', 'Histórico']
     },
     {
       icon: FileText,
       title: 'Protestos Nacional',
-      description: 'Pesquisa abrangente de protestos ativos e inativos em cartórios de todo o Brasil.',
+      description: 'Pesquisa abrangente de protestos em cartórios de todo o Brasil.',
       price: 'R$ 10,00',
-      features: ['Protestos ativos', 'Histórico completo', 'Detalhes por cartório']
+      features: ['Protestos ativos', 'Histórico completo', 'Detalhes por cartório', 'Telefones credores']
     }
   ];
 

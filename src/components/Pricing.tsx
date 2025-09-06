@@ -25,7 +25,7 @@ const Pricing = () => {
     {
       title: "Pacote Empresarial", 
       price: "R$ 100",
-      credits: "R$ 120 em créditos",
+      credits: "R$ 130 em créditos",
       description: "Perfeito para quem precisa de mais controle e dados. Tenha acesso a relatórios de suas consultas.",
       features: [
         "Consultas de CPF e Veículos",
@@ -97,9 +97,14 @@ const Pricing = () => {
 
   // Preços individuais
   const individualPrices = [
-    { service: "Consulta CPF", price: "R$ 2,99" },
-    { service: "Consulta CNPJ", price: "R$ 4,99" },
-    { service: "Consulta Veículo", price: "R$ 3,99" }
+    { service: "CPF Simples", price: "R$ 3,12" },
+    { service: "CPF Completo", price: "R$ 7,50" },
+    { service: "CNPJ Simples", price: "R$ 8,00" },
+    { service: "CNPJ Completo", price: "R$ 17,00" },
+    { service: "Veículo Básico", price: "R$ 17,00" },
+    { service: "Veículo Master", price: "R$ 35,00" },
+    { service: "Imóveis", price: "R$ 85,00" },
+    { service: "Protesto Nacional", price: "R$ 10,00" }
   ];
 
   const handleContactWhatsApp = () => {
@@ -135,9 +140,9 @@ const Pricing = () => {
         {/* Individual Prices */}
         <div className="mb-16">
           <h3 className="text-2xl font-bold text-center mb-8">Consultas Avulsas</h3>
-          <div className="grid md:grid-cols-5 gap-4 max-w-4xl mx-auto">
+          <div className="grid md:grid-cols-4 gap-4 max-w-6xl mx-auto">
             {individualPrices.map((item) => (
-              <Card key={item.service} className="text-center">
+              <Card key={item.service} className="text-center hover:shadow-card transition-smooth">
                 <CardContent className="p-4">
                   <h4 className="font-semibold text-sm mb-2">{item.service}</h4>
                   <div className="text-lg font-bold text-primary">{item.price}</div>

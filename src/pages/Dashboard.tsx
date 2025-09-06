@@ -99,12 +99,14 @@ const Dashboard = () => {
   };
 
   const consultationTypes = [
-    { id: 'cpf', name: 'CPF', icon: User, price: 'R$ 15,00' },
-    { id: 'cnpj', name: 'CNPJ', icon: Building2, price: 'R$ 25,00' },
-    { id: 'veiculo', name: 'Veículo', icon: Car, price: 'R$ 18,00' },
+    { id: 'cpf', name: 'CPF Simples', icon: User, price: 'R$ 3,12', type: 'simples' },
+    { id: 'cpf_completo', name: 'CPF Completo', icon: User, price: 'R$ 7,50', type: 'completo' },
+    { id: 'cnpj', name: 'CNPJ Simples', icon: Building2, price: 'R$ 8,00', type: 'simples' },
+    { id: 'cnpj_completo', name: 'CNPJ Completo', icon: Building2, price: 'R$ 17,00', type: 'completo' },
+    { id: 'veiculo', name: 'Veículo Básico', icon: Car, price: 'R$ 17,00', type: 'basico' },
+    { id: 'veiculo_master', name: 'Veículo Master', icon: Car, price: 'R$ 35,00', type: 'master' },
     { id: 'imoveis', name: 'Imóveis', icon: Home, price: 'R$ 85,00' },
-    { id: 'protestos', name: 'Protestos', icon: FileText, price: 'R$ 10,00' },
-    { id: 'regularidade', name: 'Regularidade', icon: CheckCircle, price: 'R$ 12,00' }
+    { id: 'protestos', name: 'Protestos Nacional', icon: FileText, price: 'R$ 10,00' }
   ];
 
   const handleSearch = async () => {
@@ -120,11 +122,16 @@ const Dashboard = () => {
     setIsLoading(true);
     
     try {
-      const { data, error } = await supabase.functions.invoke('consultation-api', {
+      // Get consultation type details
+      const selectedType = consultationTypes.find(t => t.id === searchType);
+      const baseType = searchType.replace('_completo', '').replace('_master', '');
+      
+      const { data, error } = await supabase.functions.invoke('infosimples-consultation', {
         body: {
-          type: searchType,
+          type: baseType,
           query: searchQuery,
-          userId: user?.id
+          consultationType: selectedType?.type || 'completo',
+          state: 'SP' // Default to SP, could be made configurable
         }
       });
 
@@ -346,22 +353,20 @@ const Dashboard = () => {
                     {/* Search Input */}
                     <div className="space-y-2">
                       <Label htmlFor="search">
-                        {searchType === 'cpf' && 'CPF'}
-                        {searchType === 'cnpj' && 'CNPJ'}
-                        {searchType === 'veiculo' && 'Placa do Veículo'}
+                        {(searchType === 'cpf' || searchType === 'cpf_completo') && 'CPF'}
+                        {(searchType === 'cnpj' || searchType === 'cnpj_completo') && 'CNPJ'}
+                        {(searchType === 'veiculo' || searchType === 'veiculo_master') && 'Placa do Veículo'}
                         {searchType === 'imoveis' && 'CPF/CNPJ do Proprietário'}
                         {searchType === 'protestos' && 'CPF/CNPJ'}
-                        {searchType === 'regularidade' && 'CNPJ da Empresa'}
                       </Label>
                       <Input
                         id="search"
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                         placeholder={
-                          searchType === 'cpf' ? '000.000.000-00' :
-                          searchType === 'cnpj' ? '00.000.000/0000-00' :
-                          searchType === 'veiculo' ? 'ABC1234' :
-                          searchType === 'regularidade' ? '00.000.000/0000-00' :
+                          (searchType === 'cpf' || searchType === 'cpf_completo') ? '000.000.000-00' :
+                          (searchType === 'cnpj' || searchType === 'cnpj_completo') ? '00.000.000/0000-00' :
+                          (searchType === 'veiculo' || searchType === 'veiculo_master') ? 'ABC1234' :
                           'Digite os dados'
                         }
                         className="text-lg"
