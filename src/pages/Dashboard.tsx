@@ -26,6 +26,7 @@ import VerificationModal from '@/components/VerificationModal';
 import ConsultationReport from '@/components/ConsultationReport';
 import ConsultationResults from '@/components/ConsultationResults';
 import ReportTemplate from '@/components/ReportTemplate';
+import EnhancedReportTemplate from '@/components/EnhancedReportTemplate';
 import { generatePDF, ReportData } from '@/components/PDFGenerator';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
@@ -105,6 +106,10 @@ const Dashboard = () => {
     { id: 'cnpj_completo', name: 'CNPJ Completo', icon: Building2, price: 'R$ 17,00', type: 'completo' },
     { id: 'veiculo', name: 'Veículo Básico', icon: Car, price: 'R$ 17,00', type: 'basico' },
     { id: 'veiculo_master', name: 'Veículo Master', icon: Car, price: 'R$ 35,00', type: 'master' },
+    { id: 'detran_mg_multas', name: 'Multas DETRAN MG', icon: FileText, price: 'R$ 20,00', type: 'completo' },
+    { id: 'sefaz_sp_debitos', name: 'Débitos SEFAZ SP', icon: CreditCard, price: 'R$ 24,00', type: 'completo' },
+    { id: 'detran_rj_multas', name: 'Multas DETRAN RJ', icon: FileText, price: 'R$ 20,00', type: 'completo' },
+    { id: 'sncr_imoveis', name: 'SNCR Imóveis', icon: Home, price: 'R$ 26,00', type: 'completo' },
     { id: 'imoveis', name: 'Imóveis', icon: Home, price: 'R$ 85,00' },
     { id: 'protestos', name: 'Protestos Nacional', icon: FileText, price: 'R$ 10,00' }
   ];
@@ -216,32 +221,49 @@ const Dashboard = () => {
 
     const reportData: ReportData = {
       identificacao: {
-        nome: user?.user_metadata?.full_name || 'João Silva',
+        nome: user?.user_metadata?.full_name || 'Usuário',
         documento: searchQuery,
         situacao: 'Consulta realizada',
         dataConsulta: new Date().toISOString()
-      }
+      },
+      consultationType: searchResults.type,
+      rawData: searchResults.data
     };
 
-    if (searchResults.type === 'vehicle') {
+    // Map data based on consultation type
+    if (searchResults.type === 'detran_mg_multas') {
+      reportData.detranMgMultas = searchResults.data;
+      reportData.consultationType = 'DETRAN MG - Multas';
+    } else if (searchResults.type === 'sefaz_sp_debitos') {
+      reportData.sefazSpDebitos = searchResults.data;
+      reportData.consultationType = 'SEFAZ SP - Débitos';
+    } else if (searchResults.type === 'detran_rj_multas') {
+      reportData.detranRjMultas = searchResults.data;
+      reportData.consultationType = 'DETRAN RJ - Multas';
+    } else if (searchResults.type === 'sncr_imoveis') {
+      reportData.sncrImoveis = searchResults.data;
+      reportData.consultationType = 'SNCR - Imóveis';
+    } else if (searchResults.type === 'vehicle' || searchResults.type === 'veiculo') {
       reportData.detran = {
         placa: searchResults.data.placa,
         renavam: searchResults.data.renavam,
         multas: searchResults.data.multas
       };
-    } else if (searchResults.type === 'protests') {
+      reportData.consultationType = 'Consulta Veicular';
+    } else if (searchResults.type === 'protests' || searchResults.type === 'protestos') {
       reportData.protestos = {
         constamProtestos: searchResults.data.constamProtestos,
         documentoConsultado: searchResults.data.documentoConsultado,
         protestos: searchResults.data.protestos
       };
+      reportData.consultationType = 'Consulta de Protestos';
     }
 
     setShowReportTemplate(true);
     
     // Wait for the report template to render
     setTimeout(async () => {
-      const result = await generatePDF(reportData, 'report-template');
+      const result = await generatePDF(reportData, 'enhanced-report-template');
       if (result.success) {
         toast({
           title: "PDF gerado com sucesso",
@@ -356,10 +378,13 @@ const Dashboard = () => {
                         {(searchType === 'cpf' || searchType === 'cpf_completo') && 'CPF'}
                         {(searchType === 'cnpj' || searchType === 'cnpj_completo') && 'CNPJ'}
                         {(searchType === 'veiculo' || searchType === 'veiculo_master') && 'Placa do Veículo'}
+                        {(searchType === 'detran_mg_multas' || searchType === 'sefaz_sp_debitos') && 'Placa|Renavam'}
+                        {searchType === 'detran_rj_multas' && 'Renavam|CPF/CNPJ'}
+                        {searchType === 'sncr_imoveis' && 'Consulta SNCR (Automática)'}
                         {searchType === 'imoveis' && 'CPF/CNPJ do Proprietário'}
                         {searchType === 'protestos' && 'CPF/CNPJ'}
                       </Label>
-                      <Input
+                       <Input
                         id="search"
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
@@ -367,9 +392,13 @@ const Dashboard = () => {
                           (searchType === 'cpf' || searchType === 'cpf_completo') ? '000.000.000-00' :
                           (searchType === 'cnpj' || searchType === 'cnpj_completo') ? '00.000.000/0000-00' :
                           (searchType === 'veiculo' || searchType === 'veiculo_master') ? 'ABC1234' :
+                          (searchType === 'detran_mg_multas' || searchType === 'sefaz_sp_debitos') ? 'ABC1234|123456789' :
+                          searchType === 'detran_rj_multas' ? '123456789|12345678901' :
+                          searchType === 'sncr_imoveis' ? 'Consulta automática SP/São Paulo' :
                           'Digite os dados'
                         }
                         className="text-lg"
+                        disabled={searchType === 'sncr_imoveis'}
                       />
                     </div>
 
@@ -377,7 +406,7 @@ const Dashboard = () => {
                       onClick={handleSearch}
                       variant="hero" 
                       className="w-full"
-                      disabled={isLoading || !searchQuery}
+                      disabled={isLoading || (!searchQuery && searchType !== 'sncr_imoveis')}
                     >
                       {isLoading ? (
                         <>
@@ -642,14 +671,47 @@ const Dashboard = () => {
         onClose={() => setShowPaymentVerification(false)}
       />
 
-      {/* Hidden Report Template for PDF Generation */}
+      {/* Enhanced Report Template (hidden) */}
       {showReportTemplate && searchResults && (
         <div style={{ position: 'absolute', left: '-9999px', top: '-9999px' }}>
-            <ReportTemplate
-              data={searchResults.data}
-              consultationType={searchType}
-              searchQuery={searchQuery}
-            />
+          <EnhancedReportTemplate
+            data={{
+              identificacao: {
+                nome: user?.user_metadata?.full_name || 'Usuário',
+                documento: searchQuery,
+                situacao: 'Consulta realizada',
+                dataConsulta: new Date().toISOString()
+              },
+              consultationType: searchResults.type,
+              rawData: searchResults.data,
+              ...(searchResults.type === 'detran_mg_multas' && {
+                detranMgMultas: searchResults.data
+              }),
+              ...(searchResults.type === 'sefaz_sp_debitos' && {
+                sefazSpDebitos: searchResults.data
+              }),
+              ...(searchResults.type === 'detran_rj_multas' && {
+                detranRjMultas: searchResults.data
+              }),
+              ...(searchResults.type === 'sncr_imoveis' && {
+                sncrImoveis: searchResults.data
+              }),
+              ...(searchResults.type === 'vehicle' && {
+                detran: {
+                  placa: searchResults.data.placa,
+                  renavam: searchResults.data.renavam,
+                  multas: searchResults.data.multas
+                }
+              }),
+              ...(searchResults.type === 'protests' && {
+                protestos: {
+                  constamProtestos: searchResults.data.constamProtestos,
+                  documentoConsultado: searchResults.data.documentoConsultado,
+                  protestos: searchResults.data.protestos
+                }
+              })
+            }}
+          />
         </div>
       )}
     </div>

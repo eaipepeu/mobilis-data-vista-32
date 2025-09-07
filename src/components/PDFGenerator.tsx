@@ -26,6 +26,12 @@ export interface ReportData {
   };
   imoveis?: any;
   receitaFederal?: any;
+  detranMgMultas?: any;
+  sefazSpDebitos?: any;
+  detranRjMultas?: any;
+  sncrImoveis?: any;
+  consultationType?: string;
+  rawData?: any;
 }
 
 export const generatePDF = async (data: ReportData, elementId: string) => {
@@ -35,30 +41,61 @@ export const generatePDF = async (data: ReportData, elementId: string) => {
       throw new Error('Elemento não encontrado para geração de PDF');
     }
 
-    // Create canvas from element
+    // Create canvas from element with better quality settings
     const canvas = await html2canvas(element, {
-      scale: 2,
+      scale: 3,
       useCORS: true,
       allowTaint: true,
-      backgroundColor: '#ffffff'
+      backgroundColor: '#ffffff',
+      width: element.scrollWidth,
+      height: element.scrollHeight,
+      scrollX: 0,
+      scrollY: 0
     });
 
-    // Create PDF
-    const imgData = canvas.toDataURL('image/png');
+    // Create PDF with multiple pages if needed
     const pdf = new jsPDF('p', 'mm', 'a4');
-    
     const pdfWidth = pdf.internal.pageSize.getWidth();
     const pdfHeight = pdf.internal.pageSize.getHeight();
     const imgWidth = canvas.width;
     const imgHeight = canvas.height;
-    const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
-    const imgX = (pdfWidth - imgWidth * ratio) / 2;
-    const imgY = 30;
+    
+    // Calculate how many pages we need
+    const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight) * 0.95; // 95% to leave margin
+    const scaledWidth = imgWidth * ratio;
+    const scaledHeight = imgHeight * ratio;
+    
+    const pageHeight = (pdfHeight - 20) / ratio; // 20mm margin
+    const totalPages = Math.ceil(imgHeight / pageHeight);
 
-    pdf.addImage(imgData, 'PNG', imgX, imgY, imgWidth * ratio, imgHeight * ratio);
+    for (let page = 0; page < totalPages; page++) {
+      if (page > 0) {
+        pdf.addPage();
+      }
+      
+      const yOffset = page * pageHeight;
+      const canvasSection = document.createElement('canvas');
+      const ctx = canvasSection.getContext('2d');
+      
+      canvasSection.width = imgWidth;
+      canvasSection.height = Math.min(pageHeight, imgHeight - yOffset);
+      
+      if (ctx) {
+        ctx.drawImage(
+          canvas,
+          0, yOffset, imgWidth, canvasSection.height,
+          0, 0, imgWidth, canvasSection.height
+        );
+        
+        const imgData = canvasSection.toDataURL('image/png');
+        pdf.addImage(imgData, 'PNG', 10, 10, scaledWidth, canvasSection.height * ratio);
+      }
+    }
     
     // Save PDF
-    const fileName = `relatorio-consulta-${data.identificacao.documento}-${new Date().toISOString().split('T')[0]}.pdf`;
+    const consultationType = data.consultationType || 'consulta';
+    const timestamp = new Date().toISOString().split('T')[0];
+    const fileName = `${consultationType}-${data.identificacao.documento}-${timestamp}.pdf`;
     pdf.save(fileName);
     
     return { success: true, fileName };

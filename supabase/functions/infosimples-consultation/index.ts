@@ -11,6 +11,10 @@ interface ConsultationRequest {
   query: string;
   consultationType?: string; // 'simples' or 'completo'
   state?: string; // For vehicle consultations (SP, RJ, MG, PR)
+  municipio?: string; // For property consultations
+  uf?: string; // For property consultations
+  cnpj?: string; // For RJ vehicle consultations
+  cpf?: string; // For RJ vehicle consultations
 }
 
 serve(async (req) => {
@@ -37,7 +41,7 @@ serve(async (req) => {
     }
 
     const consultationData: ConsultationRequest = await req.json();
-    const { type, query, consultationType = 'completo', state = 'SP' } = consultationData;
+    const { type, query, consultationType = 'completo', state = 'SP', municipio, uf, cnpj, cpf } = consultationData;
 
     // Get InfoSimples token
     const infosimplesToken = Deno.env.get("INFOSIMPLES_TOKEN");
@@ -78,6 +82,18 @@ serve(async (req) => {
     } else if (type === 'protesto') {
       consultationTypeKey = 'protesto_nacional';
       endpoint = 'https://api.infosimples.com/api/v2/consulta/protesto';
+    } else if (type === 'detran_mg_multas') {
+      consultationTypeKey = 'detran_mg_multas';
+      endpoint = 'https://api.infosimples.com/api/v2/consultas/detran/mg/multas-extrato';
+    } else if (type === 'sefaz_sp_debitos') {
+      consultationTypeKey = 'sefaz_sp_debitos';
+      endpoint = 'https://api.infosimples.com/api/v2/consultas/sefaz/sp/debitos-veiculo';
+    } else if (type === 'detran_rj_multas') {
+      consultationTypeKey = 'detran_rj_multas';
+      endpoint = 'https://api.infosimples.com/api/v2/consultas/detran/rj/multas-guias';
+    } else if (type === 'sncr_imoveis') {
+      consultationTypeKey = 'sncr_imoveis';
+      endpoint = 'https://api.infosimples.com/api/v2/consultas/sncr/imoveis';
     }
 
     // Find the cost for this consultation type
@@ -111,6 +127,28 @@ serve(async (req) => {
       if (renavam) {
         requestBody.renavam = renavam;
       }
+    } else if (type === 'detran_mg_multas' || type === 'sefaz_sp_debitos') {
+      const [placa, renavam] = query.split('|'); // Expecting "ABC1234|123456789"
+      requestBody.placa = placa;
+      if (renavam) {
+        requestBody.renavam = renavam;
+      }
+      delete requestBody.documento; // Remove documento field for these consultations
+    } else if (type === 'detran_rj_multas') {
+      const [renavam, cpfOrCnpj] = query.split('|'); // Expecting "123456789|12345678901"
+      requestBody.renavam = renavam;
+      if (cpfOrCnpj) {
+        if (cpfOrCnpj.length === 11) {
+          requestBody.cpf = cpfOrCnpj;
+        } else if (cpfOrCnpj.length === 14) {
+          requestBody.cnpj = cpfOrCnpj;
+        }
+      }
+      delete requestBody.documento; // Remove documento field for this consultation
+    } else if (type === 'sncr_imoveis') {
+      requestBody.uf = uf || 'SP';
+      requestBody.municipio = municipio || 'SAO PAULO';
+      delete requestBody.documento; // Remove documento field for this consultation
     }
 
     // Make API call to InfoSimples
@@ -148,6 +186,11 @@ serve(async (req) => {
     // Add contact phone numbers for creditors in complete consultations
     if (consultationType === 'completo' && (type === 'cpf' || type === 'cnpj')) {
       processedData = addCreditorPhones(apiData);
+    }
+
+    // Process new consultation types
+    if (['detran_mg_multas', 'sefaz_sp_debitos', 'detran_rj_multas', 'sncr_imoveis'].includes(type)) {
+      processedData = processSpecializedConsultation(apiData, type);
     }
 
     // Deduct credits
@@ -289,4 +332,47 @@ function addCreditorPhones(data: any): any {
   }
 
   return dataWithPhones;
+}
+
+// Helper function to process specialized consultations
+function processSpecializedConsultation(data: any, type: string): any {
+  if (!data || !data.data) return data;
+
+  const processedData = { ...data };
+  
+  // Add formatted information for each consultation type
+  if (type === 'detran_mg_multas') {
+    processedData.consultation_type = 'Multas DETRAN MG';
+    processedData.formatted_data = data.data.map((item: any) => ({
+      ...item,
+      tipo_consulta: 'Multas e Infrações - MG',
+      valor_formatado: item.valor || 'N/A',
+      data_formatada: item.data_infracao || 'N/A'
+    }));
+  } else if (type === 'sefaz_sp_debitos') {
+    processedData.consultation_type = 'Débitos SEFAZ SP';
+    processedData.formatted_data = data.data.map((item: any) => ({
+      ...item,
+      tipo_consulta: 'Débitos Veiculares - SP',
+      valor_total_formatado: item.valor_total_debitos || 'N/A',
+      ipva_formatado: item.ipva?.valor || 'N/A'
+    }));
+  } else if (type === 'detran_rj_multas') {
+    processedData.consultation_type = 'Multas DETRAN RJ';
+    processedData.formatted_data = data.data.map((item: any) => ({
+      ...item,
+      tipo_consulta: 'Multas e Guias - RJ',
+      valor_formatado: item.valor || 'N/A',
+      vencimento_formatado: item.vencimento || 'N/A'
+    }));
+  } else if (type === 'sncr_imoveis') {
+    processedData.consultation_type = 'Consulta SNCR Imóveis';
+    processedData.formatted_data = data.data.map((item: any) => ({
+      ...item,
+      tipo_consulta: 'Sistema Nacional de Cadastro Rural',
+      status_csv: item.conseguiu_emitir_csv ? 'Disponível' : 'Indisponível'
+    }));
+  }
+
+  return processedData;
 }
